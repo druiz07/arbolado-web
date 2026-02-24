@@ -1,495 +1,806 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arbolado Urbano — Acceso Profesional</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arbolado Urbano — Acceso Profesional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    :root {
-      --forest:   #0e1f0e;
-      --moss:     #1a3320;
-      --fern:     #2d5a35;
-      --sage:     #4a7a50;
-      --mint:     #8fbc8f;
-      --cream:    #f2ede4;
-      --gold:     #c8a84b;
-      --gold-lt:  #e0c878;
-    }
+      :root {
+        --forest: #0e1f0e;
+        --moss: #1a3320;
+        --fern: #2d5a35;
+        --sage: #4a7a50;
+        --mint: #8fbc8f;
+        --cream: #f2ede4;
+        --gold: #c8a84b;
+        --gold-lt: #e0c878;
+      }
 
-    html, body { height: 100%; }
+      html,
+      body {
+        height: 100%;
+      }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--forest);
-      color: var(--cream);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--forest);
+        color: var(--cream);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-    /* Fondo con gradiente atmosférico */
-    body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 15% 0%,  rgba(45,90,53,0.40) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 80% at 85% 100%, rgba(26,51,32,0.55) 0%, transparent 65%),
-        radial-gradient(ellipse 35% 35% at 55% 45%,  rgba(200,168,75,0.05) 0%, transparent 55%);
-    }
+      /* Fondo con gradiente atmosférico */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 15% 0%,
+            rgba(45, 90, 53, 0.4) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 60% 80% at 85% 100%,
+            rgba(26, 51, 32, 0.55) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 35% 35% at 55% 45%,
+            rgba(200, 168, 75, 0.05) 0%,
+            transparent 55%
+          );
+      }
 
-    /* Textura grain sutil */
-    body::after {
-      content: '';
-      position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.35;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-    }
+      /* Textura grain sutil */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.35;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      }
 
-    .page {
-      position: relative; z-index: 2;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-    }
+      .page {
+        position: relative;
+        z-index: 2;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    /* ── HEADER ─────────────────────────────── */
-    header {
-      padding: 28px 52px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid rgba(143,188,143,0.10);
-    }
-    .logo { display: flex; align-items: center; gap: 14px; }
-    .logo-icon {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--fern), var(--moss));
-      border: 1px solid rgba(143,188,143,0.28);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 19px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-    }
-    .logo-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px; font-weight: 600; color: var(--cream);
-    }
-    .logo-tagline {
-      font-size: 10px; font-weight: 300; letter-spacing: 0.09em;
-      text-transform: uppercase; color: var(--mint);
-    }
-    .badge {
-      background: linear-gradient(135deg, var(--gold), #9a7828);
-      color: var(--forest); font-size: 10px; font-weight: 600;
-      padding: 4px 12px; border-radius: 20px; letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+      /* ── HEADER ─────────────────────────────── */
+      header {
+        padding: 28px 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(143, 188, 143, 0.1);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--fern), var(--moss));
+        border: 1px solid rgba(143, 188, 143, 0.28);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+      .logo-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--cream);
+      }
+      .logo-tagline {
+        font-size: 10px;
+        font-weight: 300;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--mint);
+      }
+      .badge {
+        background: linear-gradient(135deg, var(--gold), #9a7828);
+        color: var(--forest);
+        font-size: 10px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
 
-    /* ── HERO LAYOUT ─────────────────────────── */
-    .hero {
-      flex: 1;
-      display: flex; align-items: center; justify-content: center;
-      padding: 60px 52px; gap: 90px;
-    }
+      /* ── HERO LAYOUT ─────────────────────────── */
+      .hero {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 52px;
+        gap: 90px;
+      }
 
-    /* ── HERO COPY ───────────────────────────── */
-    .hero-copy { max-width: 500px; }
+      /* ── HERO COPY ───────────────────────────── */
+      .hero-copy {
+        max-width: 500px;
+      }
 
-    .eyebrow {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 22px;
-    }
-    .eyebrow::before {
-      content: ''; display: block; width: 28px; height: 1px; background: var(--gold);
-    }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 22px;
+      }
+      .eyebrow::before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--gold);
+      }
 
-    h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(40px, 4.5vw, 68px);
-      font-weight: 300; line-height: 1.12; color: var(--cream);
-      margin-bottom: 22px;
-    }
-    h1 em { font-style: italic; color: var(--mint); }
+      h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(40px, 4.5vw, 68px);
+        font-weight: 300;
+        line-height: 1.12;
+        color: var(--cream);
+        margin-bottom: 22px;
+      }
+      h1 em {
+        font-style: italic;
+        color: var(--mint);
+      }
 
-    .hero-desc {
-      font-size: 14px; line-height: 1.85;
-      color: rgba(242,237,228,0.60); margin-bottom: 38px;
-    }
+      .hero-desc {
+        font-size: 14px;
+        line-height: 1.85;
+        color: rgba(242, 237, 228, 0.6);
+        margin-bottom: 38px;
+      }
 
-    .features { display: flex; flex-direction: column; gap: 10px; }
-    .feat {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 13px; color: rgba(242,237,228,0.65);
-    }
-    .feat-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--gold); flex-shrink: 0;
-    }
+      .features {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .feat {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: rgba(242, 237, 228, 0.65);
+      }
+      .feat-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
 
-    /* ── LOGIN CARD ──────────────────────────── */
-    .card {
-      background: rgba(22,46,28,0.72);
-      backdrop-filter: blur(28px);
-      border: 1px solid rgba(143,188,143,0.16);
-      border-radius: 26px; padding: 46px 44px;
-      width: 400px; flex-shrink: 0;
-      box-shadow: 0 36px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(200,168,75,0.05);
-      position: relative; overflow: hidden;
-      animation: fadeUp .55s ease both;
-    }
-    .card::before {
-      content: '';
-      position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(200,168,75,.55), transparent);
-    }
+      /* ── LOGIN CARD ──────────────────────────── */
+      .card {
+        background: rgba(22, 46, 28, 0.72);
+        backdrop-filter: blur(28px);
+        border: 1px solid rgba(143, 188, 143, 0.16);
+        border-radius: 26px;
+        padding: 46px 44px;
+        width: 400px;
+        flex-shrink: 0;
+        box-shadow:
+          0 36px 80px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(200, 168, 75, 0.05);
+        position: relative;
+        overflow: hidden;
+        animation: fadeUp 0.55s ease both;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 15%;
+        right: 15%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(200, 168, 75, 0.55),
+          transparent
+        );
+      }
 
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px; font-weight: 400; color: var(--cream); margin-bottom: 4px;
-    }
-    .card-sub { font-size: 12px; color: rgba(143,188,143,.65); margin-bottom: 34px; }
+      .card-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--cream);
+        margin-bottom: 4px;
+      }
+      .card-sub {
+        font-size: 12px;
+        color: rgba(143, 188, 143, 0.65);
+        margin-bottom: 34px;
+      }
 
-    .field { margin-bottom: 18px; }
-    .field label {
-      display: block; font-size: 10px; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(143,188,143,.80); margin-bottom: 8px;
-    }
-    .field input {
-      width: 100%; padding: 13px 17px;
-      background: rgba(10,24,12,0.65);
-      border: 1px solid rgba(143,188,143,.18);
-      border-radius: 11px;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--cream);
-      outline: none; transition: border-color .2s, box-shadow .2s;
-    }
-    .field input::placeholder { color: rgba(143,188,143,.22); }
-    .field input:focus {
-      border-color: rgba(200,168,75,.48);
-      box-shadow: 0 0 0 3px rgba(200,168,75,.07);
-    }
+      .field {
+        margin-bottom: 18px;
+      }
+      .field label {
+        display: block;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(143, 188, 143, 0.8);
+        margin-bottom: 8px;
+      }
+      .field input {
+        width: 100%;
+        padding: 13px 17px;
+        background: rgba(10, 24, 12, 0.65);
+        border: 1px solid rgba(143, 188, 143, 0.18);
+        border-radius: 11px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        color: var(--cream);
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .field input::placeholder {
+        color: rgba(143, 188, 143, 0.22);
+      }
+      .field input:focus {
+        border-color: rgba(200, 168, 75, 0.48);
+        box-shadow: 0 0 0 3px rgba(200, 168, 75, 0.07);
+      }
 
-    .btn-login {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, var(--fern) 0%, #1e4826 100%);
-      border: 1px solid rgba(143,188,143,.28); border-radius: 11px;
-      color: var(--cream); font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 500; letter-spacing: .04em;
-      cursor: pointer; transition: all .2s; margin-top: 6px;
-    }
-    .btn-login:hover {
-      background: linear-gradient(135deg, #38704a 0%, #265830 100%);
-      border-color: rgba(143,188,143,.45); transform: translateY(-1px);
-      box-shadow: 0 8px 22px rgba(0,0,0,.30);
-    }
-    .btn-login:active { transform: translateY(0); }
-    .btn-login:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+      .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, var(--fern) 0%, #1e4826 100%);
+        border: 1px solid rgba(143, 188, 143, 0.28);
+        border-radius: 11px;
+        color: var(--cream);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 6px;
+      }
+      .btn-login:hover {
+        background: linear-gradient(135deg, #38704a 0%, #265830 100%);
+        border-color: rgba(143, 188, 143, 0.45);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+      }
+      .btn-login:active {
+        transform: translateY(0);
+      }
+      .btn-login:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
 
-    /* spinner */
-    .spin {
-      display: inline-block; width: 13px; height: 13px;
-      border: 2px solid rgba(242,237,228,.25); border-top-color: var(--cream);
-      border-radius: 50%; animation: rot .55s linear infinite;
-      vertical-align: middle; margin-right: 7px;
-    }
-    @keyframes rot { to { transform: rotate(360deg); } }
+      /* spinner */
+      .spin {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        border: 2px solid rgba(242, 237, 228, 0.25);
+        border-top-color: var(--cream);
+        border-radius: 50%;
+        animation: rot 0.55s linear infinite;
+        vertical-align: middle;
+        margin-right: 7px;
+      }
+      @keyframes rot {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-    .msg {
-      border-radius: 10px; padding: 11px 15px;
-      font-size: 12.5px; margin-top: 15px; display: none;
-    }
-    .msg.err  { background: rgba(160,50,50,.18); border: 1px solid rgba(180,60,60,.30); color: #ffaaaa; }
-    .msg.ok   { background: rgba(45,90,53,.28);  border: 1px solid rgba(90,160,90,.30); color: #a0e0a0; }
-    .msg.show { display: block; }
+      .msg {
+        border-radius: 10px;
+        padding: 11px 15px;
+        font-size: 12.5px;
+        margin-top: 15px;
+        display: none;
+      }
+      .msg.err {
+        background: rgba(160, 50, 50, 0.18);
+        border: 1px solid rgba(180, 60, 60, 0.3);
+        color: #ffaaaa;
+      }
+      .msg.ok {
+        background: rgba(45, 90, 53, 0.28);
+        border: 1px solid rgba(90, 160, 90, 0.3);
+        color: #a0e0a0;
+      }
+      .msg.show {
+        display: block;
+      }
 
-    /* ── DOWNLOAD VIEW ───────────────────────── */
-    #dl-view { display: none; }
-    #dl-view.show { display: flex; justify-content: center; padding: 80px 52px; }
+      /* ── DOWNLOAD VIEW ───────────────────────── */
+      #dl-view {
+        display: none;
+      }
+      #dl-view.show {
+        display: flex;
+        justify-content: center;
+        padding: 80px 52px;
+      }
 
-    .dl-card {
-      background: rgba(22,46,28,0.72); backdrop-filter: blur(28px);
-      border: 1px solid rgba(143,188,143,.16); border-radius: 26px;
-      padding: 46px 44px; width: 480px;
-      box-shadow: 0 36px 80px rgba(0,0,0,.45);
-      position: relative; overflow: hidden; animation: fadeUp .4s ease both;
-    }
-    .dl-card::before {
-      content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(200,168,75,.55), transparent);
-    }
+      .dl-card {
+        background: rgba(22, 46, 28, 0.72);
+        backdrop-filter: blur(28px);
+        border: 1px solid rgba(143, 188, 143, 0.16);
+        border-radius: 26px;
+        padding: 46px 44px;
+        width: 480px;
+        box-shadow: 0 36px 80px rgba(0, 0, 0, 0.45);
+        position: relative;
+        overflow: hidden;
+        animation: fadeUp 0.4s ease both;
+      }
+      .dl-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 15%;
+        right: 15%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(200, 168, 75, 0.55),
+          transparent
+        );
+      }
 
-    .dl-welcome {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 26px; font-weight: 400; margin-bottom: 4px;
-    }
-    .dl-sub { font-size: 12px; color: rgba(143,188,143,.65); margin-bottom: 32px; }
+      .dl-welcome {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 26px;
+        font-weight: 400;
+        margin-bottom: 4px;
+      }
+      .dl-sub {
+        font-size: 12px;
+        color: rgba(143, 188, 143, 0.65);
+        margin-bottom: 32px;
+      }
 
-    .dl-btn {
-      display: flex; align-items: center; gap: 18px;
-      background: rgba(10,24,12,.55);
-      border: 1px solid rgba(200,168,75,.22); border-radius: 14px;
-      padding: 20px 22px; margin-bottom: 10px;
-      cursor: pointer; text-decoration: none; color: inherit;
-      transition: all .2s;
-    }
-    .dl-btn:hover {
-      background: rgba(45,90,53,.45); border-color: rgba(200,168,75,.45);
-      transform: translateX(5px);
-    }
-    .dl-ico {
-      font-size: 28px; width: 52px; height: 52px; border-radius: 11px;
-      background: rgba(45,90,53,.5);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .dl-info h3 { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
-    .dl-info p  { font-size: 11px; color: rgba(143,188,143,.55); }
-    .dl-arrow { margin-left: auto; color: var(--gold); font-size: 20px; }
+      .dl-btn {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        background: rgba(10, 24, 12, 0.55);
+        border: 1px solid rgba(200, 168, 75, 0.22);
+        border-radius: 14px;
+        padding: 20px 22px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s;
+      }
+      .dl-btn:hover {
+        background: rgba(45, 90, 53, 0.45);
+        border-color: rgba(200, 168, 75, 0.45);
+        transform: translateX(5px);
+      }
+      .dl-ico {
+        font-size: 28px;
+        width: 52px;
+        height: 52px;
+        border-radius: 11px;
+        background: rgba(45, 90, 53, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .dl-info h3 {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 3px;
+      }
+      .dl-info p {
+        font-size: 11px;
+        color: rgba(143, 188, 143, 0.55);
+      }
+      .dl-arrow {
+        margin-left: auto;
+        color: var(--gold);
+        font-size: 20px;
+      }
 
-    .dl-note {
-      font-size: 11px; color: rgba(143,188,143,.35);
-      text-align: center; margin-top: 22px; line-height: 1.65;
-    }
+      .dl-note {
+        font-size: 11px;
+        color: rgba(143, 188, 143, 0.35);
+        text-align: center;
+        margin-top: 22px;
+        line-height: 1.65;
+      }
 
-    .btn-out {
-      width: 100%; margin-top: 18px; padding: 10px;
-      background: none; border: 1px solid rgba(143,188,143,.16); border-radius: 9px;
-      color: rgba(143,188,143,.5); font-family: 'DM Sans', sans-serif;
-      font-size: 12px; cursor: pointer; transition: all .2s;
-    }
-    .btn-out:hover { border-color: rgba(143,188,143,.35); color: var(--mint); }
+      .btn-out {
+        width: 100%;
+        margin-top: 18px;
+        padding: 10px;
+        background: none;
+        border: 1px solid rgba(143, 188, 143, 0.16);
+        border-radius: 9px;
+        color: rgba(143, 188, 143, 0.5);
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-out:hover {
+        border-color: rgba(143, 188, 143, 0.35);
+        color: var(--mint);
+      }
 
-    /* ── FOOTER ──────────────────────────────── */
-    footer {
-      padding: 22px 52px;
-      border-top: 1px solid rgba(143,188,143,.07);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .ft-copy { font-size: 10px; color: rgba(143,188,143,.28); }
-    .ft-links { display: flex; gap: 22px; }
-    .ft-links a { font-size: 10px; color: rgba(143,188,143,.28); text-decoration: none; }
-    .ft-links a:hover { color: var(--mint); }
+      /* ── FOOTER ──────────────────────────────── */
+      footer {
+        padding: 22px 52px;
+        border-top: 1px solid rgba(143, 188, 143, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ft-copy {
+        font-size: 10px;
+        color: rgba(143, 188, 143, 0.28);
+      }
+      .ft-links {
+        display: flex;
+        gap: 22px;
+      }
+      .ft-links a {
+        font-size: 10px;
+        color: rgba(143, 188, 143, 0.28);
+        text-decoration: none;
+      }
+      .ft-links a:hover {
+        color: var(--mint);
+      }
 
-    /* ── ANIMACIONES ─────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: none; }
-    }
-    .hero-copy { animation: fadeUp .55s ease .1s both; }
+      /* ── ANIMACIONES ─────────────────────────── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .hero-copy {
+        animation: fadeUp 0.55s ease 0.1s both;
+      }
 
-    /* ── RESPONSIVE ──────────────────────────── */
-    @media (max-width: 860px) {
-      .hero { flex-direction: column; gap: 36px; padding: 40px 24px; }
-      .card, .dl-card { width: 100%; max-width: 420px; padding: 36px 26px; }
-      header, footer { padding: 20px 24px; }
-    }
-  </style>
-</head>
-<body>
-<div class="page">
+      /* ── RESPONSIVE ──────────────────────────── */
+      @media (max-width: 860px) {
+        .hero {
+          flex-direction: column;
+          gap: 36px;
+          padding: 40px 24px;
+        }
+        .card,
+        .dl-card {
+          width: 100%;
+          max-width: 420px;
+          padding: 36px 26px;
+        }
+        header,
+        footer {
+          padding: 20px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="logo">
+          <div class="logo-icon">🌳</div>
+          <div>
+            <div class="logo-name">Arbolado Urbano</div>
+            <div class="logo-tagline">Sistema de Selección de Especies</div>
+          </div>
+        </div>
+        <span class="badge">Edición Profesional</span>
+      </header>
 
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🌳</div>
-      <div>
-        <div class="logo-name">Arbolado Urbano</div>
-        <div class="logo-tagline">Sistema de Selección de Especies</div>
-      </div>
-    </div>
-    <span class="badge">Edición Profesional</span>
-  </header>
+      <!-- ─── VISTA LOGIN ─────────────────────── -->
+      <div id="login-view">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">Herramienta técnica certificada</div>
+            <h1>
+              Selección de <em>arbolado urbano</em><br />basada en ciencia
+            </h1>
+            <p class="hero-desc">
+              Sistema experto de apoyo a la decisión para técnicos municipales y
+              profesionales del paisajismo. Filtrado automático por clima,
+              suelo, espacio disponible y escenarios IPCC de cambio climático.
+            </p>
+            <div class="features">
+              <div class="feat">
+                <span class="feat-dot"></span>25 especies con ficha técnica y
+                datos fitosanitarios
+              </div>
+              <div class="feat">
+                <span class="feat-dot"></span>Tabla dicotómica conforme a
+                normativa española
+              </div>
+              <div class="feat">
+                <span class="feat-dot"></span>Escenarios de cambio climático RCP
+                4.5 y RCP 8.5
+              </div>
+              <div class="feat">
+                <span class="feat-dot"></span>Exportación de informe técnico en
+                texto
+              </div>
+              <div class="feat">
+                <span class="feat-dot"></span>Aplicación de escritorio —
+                funciona sin internet
+              </div>
+            </div>
+          </div>
 
-  <!-- ─── VISTA LOGIN ─────────────────────── -->
-  <div id="login-view">
-    <div class="hero">
+          <div class="card">
+            <div class="card-title">Acceso profesional</div>
+            <div class="card-sub">Introduce tus credenciales de licencia</div>
 
-      <div class="hero-copy">
-        <div class="eyebrow">Herramienta técnica certificada</div>
-        <h1>Selección de <em>arbolado urbano</em><br>basada en ciencia</h1>
-        <p class="hero-desc">
-          Sistema experto de apoyo a la decisión para técnicos municipales
-          y profesionales del paisajismo. Filtrado automático por clima,
-          suelo, espacio disponible y escenarios IPCC de cambio climático.
-        </p>
-        <div class="features">
-          <div class="feat"><span class="feat-dot"></span>25 especies con ficha técnica y datos fitosanitarios</div>
-          <div class="feat"><span class="feat-dot"></span>Tabla dicotómica conforme a normativa española</div>
-          <div class="feat"><span class="feat-dot"></span>Escenarios de cambio climático RCP 4.5 y RCP 8.5</div>
-          <div class="feat"><span class="feat-dot"></span>Exportación de informe técnico en texto</div>
-          <div class="feat"><span class="feat-dot"></span>Aplicación de escritorio — funciona sin internet</div>
+            <div class="field">
+              <label>Usuario</label>
+              <input
+                type="text"
+                id="usr"
+                placeholder="tu_usuario"
+                autocomplete="username"
+                onkeydown="
+                  if (event.key === 'Enter')
+                    document.getElementById('pwd').focus();
+                "
+              />
+            </div>
+            <div class="field">
+              <label>Contraseña</label>
+              <input
+                type="password"
+                id="pwd"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                onkeydown="if (event.key === 'Enter') login();"
+              />
+            </div>
+
+            <button class="btn-login" id="btn" onclick="login()">
+              Acceder
+            </button>
+            <div class="msg err" id="err-msg"></div>
+          </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Acceso profesional</div>
-        <div class="card-sub">Introduce tus credenciales de licencia</div>
+      <!-- ─── VISTA DESCARGA ──────────────────── -->
+      <div id="dl-view">
+        <div class="dl-card">
+          <div class="dl-welcome" id="dl-name">Bienvenido</div>
+          <div class="dl-sub">
+            Tu licencia está activa · Descarga la aplicación
+          </div>
 
-        <div class="field">
-          <label>Usuario</label>
-          <input type="text" id="usr" placeholder="tu_usuario" autocomplete="username"
-            onkeydown="if(event.key==='Enter')document.getElementById('pwd').focus()" />
-        </div>
-        <div class="field">
-          <label>Contraseña</label>
-          <input type="password" id="pwd" placeholder="••••••••" autocomplete="current-password"
-            onkeydown="if(event.key==='Enter')login()" />
-        </div>
+          <a
+            class="dl-btn"
+            id="dl-exe-btn"
+            href="#"
+            onclick="return trackDownload('exe');"
+          >
+            <div class="dl-ico">🖥️</div>
+            <div class="dl-info">
+              <h3>Arbolado Urbano · Instalador Windows</h3>
+              <p>Archivo .exe · Compatible con Windows 10 y 11 · ~90 MB</p>
+            </div>
+            <div class="dl-arrow">↓</div>
+          </a>
 
-        <button class="btn-login" id="btn" onclick="login()">
-          Acceder
-        </button>
-        <div class="msg err" id="err-msg"></div>
+          <p class="dl-note">
+            Esta licencia es personal e intransferible.<br />
+            La redistribución del software está prohibida por los términos de
+            uso.
+          </p>
+
+          <button class="btn-out" onclick="logout()">Cerrar sesión</button>
+        </div>
       </div>
 
-    </div>
-  </div>
-
-  <!-- ─── VISTA DESCARGA ──────────────────── -->
-  <div id="dl-view">
-    <div class="dl-card">
-      <div class="dl-welcome" id="dl-name">Bienvenido</div>
-      <div class="dl-sub">Tu licencia está activa · Descarga la aplicación</div>
-
-      <a class="dl-btn" id="dl-exe-btn" href="#" onclick="return trackDownload('exe')">
-        <div class="dl-ico">🖥️</div>
-        <div class="dl-info">
-          <h3>Arbolado Urbano · Instalador Windows</h3>
-          <p>Archivo .exe · Compatible con Windows 10 y 11 · ~90 MB</p>
+      <footer>
+        <span class="ft-copy"
+          >© 2025 Arbolado Urbano · Todos los derechos reservados</span
+        >
+        <div class="ft-links">
+          <a href="#">Términos de uso</a>
+          <a href="mailto:soporte@arboladourbano.es">Soporte técnico</a>
         </div>
-        <div class="dl-arrow">↓</div>
-      </a>
-
-      <p class="dl-note">
-        Esta licencia es personal e intransferible.<br>
-        La redistribución del software está prohibida por los términos de uso.
-      </p>
-
-      <button class="btn-out" onclick="logout()">Cerrar sesión</button>
+      </footer>
     </div>
-  </div>
 
-  <footer>
-    <span class="ft-copy">© 2025 Arbolado Urbano · Todos los derechos reservados</span>
-    <div class="ft-links">
-      <a href="#">Términos de uso</a>
-      <a href="mailto:soporte@arboladourbano.es">Soporte técnico</a>
-    </div>
-  </footer>
+    <script>
+      // ═══════════════════════════════════════════════════════════════
+      //  CREDENCIALES DE USUARIOS
+      //  ─────────────────────────────────────────────────────────────
+      //  Para AÑADIR un usuario: añade una línea al objeto USERS
+      //  Para ELIMINAR acceso: borra la línea o pon active: false
+      //  Para CAMBIAR contraseña: edita el campo pass
+      //
+      //  ⚠  Sube siempre los cambios a GitHub — se publican solos en Pages
+      //
+      //  Formato de contraseña: usa mínimo 12 caracteres con mayúsculas,
+      //  números y símbolos para mayor seguridad.
+      // ═══════════════════════════════════════════════════════════════
+      const USERS = {
+        // ── AÑADE AQUÍ TUS CLIENTES ──────────────────────────────────
+        // 'nombre_de_usuario': { pass: 'contraseña', name: 'Nombre visible', active: true }
 
-</div>
+        admin: {
+          pass: "Admin2025!Arbolado",
+          name: "Administrador",
+          active: true,
+        },
+        ayto_madrid: {
+          pass: "Mad2025#Arbolado!",
+          name: "Ayuntamiento de Madrid",
+          active: true,
+        },
+        garcia_paisajismo: {
+          pass: "Grc!Arbolado2025$",
+          name: "García Paisajismo SL",
+          active: true,
+        },
+        // 'cliente_inactivo':  { pass: 'xxx',                   name: 'Cliente pausado',         active: false },
 
-<script>
-// ═══════════════════════════════════════════════════════════════
-//  CREDENCIALES DE USUARIOS
-//  ─────────────────────────────────────────────────────────────
-//  Para AÑADIR un usuario: añade una línea al objeto USERS
-//  Para ELIMINAR acceso: borra la línea o pon active: false
-//  Para CAMBIAR contraseña: edita el campo pass
-//
-//  ⚠  Sube siempre los cambios a GitHub — se publican solos en Pages
-//
-//  Formato de contraseña: usa mínimo 12 caracteres con mayúsculas,
-//  números y símbolos para mayor seguridad.
-// ═══════════════════════════════════════════════════════════════
-const USERS = {
+        // ── FIN DE LA LISTA ──────────────────────────────────────────
+      };
 
-  // ── AÑADE AQUÍ TUS CLIENTES ──────────────────────────────────
-  // 'nombre_de_usuario': { pass: 'contraseña', name: 'Nombre visible', active: true }
+      // ─────────────────────────────────────────────────────────────
+      //  URL DEL INSTALADOR .EXE
+      //  Sube el .exe compilado a GitHub Releases y pega aquí la URL
+      //  Ejemplo: https://github.com/tu-usuario/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe
+      // ─────────────────────────────────────────────────────────────
+      const EXE_URL =
+        "https://github.com/druiz07/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe";
 
-  'admin':             { pass: 'Admin2025!Arbolado',    name: 'Administrador',          active: true  },
-  'ayto_madrid':       { pass: 'Mad2025#Arbolado!',     name: 'Ayuntamiento de Madrid',  active: true  },
-  'garcia_paisajismo': { pass: 'Grc!Arbolado2025$',     name: 'García Paisajismo SL',   active: true  },
-  // 'cliente_inactivo':  { pass: 'xxx',                   name: 'Cliente pausado',         active: false },
+      // ─────────────────────────────────────────────────────────────
+      //  LÓGICA DE AUTENTICACIÓN
+      // ─────────────────────────────────────────────────────────────
 
-  // ── FIN DE LA LISTA ──────────────────────────────────────────
-};
+      function login() {
+        const usr = document.getElementById("usr").value.trim().toLowerCase();
+        const pwd = document.getElementById("pwd").value;
+        const btn = document.getElementById("btn");
+        const err = document.getElementById("err-msg");
 
-// ─────────────────────────────────────────────────────────────
-//  URL DEL INSTALADOR .EXE
-//  Sube el .exe compilado a GitHub Releases y pega aquí la URL
-//  Ejemplo: https://github.com/tu-usuario/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe
-// ─────────────────────────────────────────────────────────────
-const EXE_URL = 'https://github.com/TU_USUARIO/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe';
+        if (!usr || !pwd) {
+          showErr("Introduce usuario y contraseña");
+          return;
+        }
 
-// ─────────────────────────────────────────────────────────────
-//  LÓGICA DE AUTENTICACIÓN
-// ─────────────────────────────────────────────────────────────
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spin"></span>Verificando…';
+        err.classList.remove("show");
 
-function login() {
-  const usr = document.getElementById('usr').value.trim().toLowerCase();
-  const pwd = document.getElementById('pwd').value;
-  const btn = document.getElementById('btn');
-  const err = document.getElementById('err-msg');
+        // Pequeño delay artificial para no parecer instantáneo
+        setTimeout(() => {
+          const user = USERS[usr];
 
-  if (!usr || !pwd) { showErr('Introduce usuario y contraseña'); return; }
+          if (!user || user.pass !== pwd) {
+            showErr("Usuario o contraseña incorrectos");
+            btn.disabled = false;
+            btn.textContent = "Acceder";
+            return;
+          }
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>Verificando…';
-  err.classList.remove('show');
+          if (!user.active) {
+            showErr("Tu licencia está suspendida. Contacta con el proveedor.");
+            btn.disabled = false;
+            btn.textContent = "Acceder";
+            return;
+          }
 
-  // Pequeño delay artificial para no parecer instantáneo
-  setTimeout(() => {
-    const user = USERS[usr];
+          // ✓ Credenciales correctas
+          sessionStorage.setItem(
+            "au_user",
+            JSON.stringify({ id: usr, name: user.name }),
+          );
+          showDownload(user.name);
+        }, 600);
+      }
 
-    if (!user || user.pass !== pwd) {
-      showErr('Usuario o contraseña incorrectos');
-      btn.disabled = false; btn.textContent = 'Acceder';
-      return;
-    }
+      function showErr(msg) {
+        const err = document.getElementById("err-msg");
+        err.textContent = "⚠  " + msg;
+        err.classList.add("show");
+      }
 
-    if (!user.active) {
-      showErr('Tu licencia está suspendida. Contacta con el proveedor.');
-      btn.disabled = false; btn.textContent = 'Acceder';
-      return;
-    }
+      function showDownload(name) {
+        document.getElementById("login-view").style.display = "none";
+        document.getElementById("dl-name").textContent = "Bienvenido, " + name;
+        document.getElementById("dl-exe-btn").href = EXE_URL;
+        const v = document.getElementById("dl-view");
+        v.classList.add("show");
+      }
 
-    // ✓ Credenciales correctas
-    sessionStorage.setItem('au_user', JSON.stringify({ id: usr, name: user.name }));
-    showDownload(user.name);
+      function logout() {
+        sessionStorage.removeItem("au_user");
+        document.getElementById("dl-view").classList.remove("show");
+        document.getElementById("login-view").style.display = "block";
+        document.getElementById("usr").value = "";
+        document.getElementById("pwd").value = "";
+        document.getElementById("btn").disabled = false;
+        document.getElementById("btn").textContent = "Acceder";
+      }
 
-  }, 600);
-}
+      function trackDownload(type) {
+        // Registro local opcional — añade aquí analytics si quieres (ej. Plausible)
+        const user = JSON.parse(sessionStorage.getItem("au_user") || "{}");
+        console.log("[descarga]", type, user.id, new Date().toISOString());
+        return true; // permitir la descarga
+      }
 
-function showErr(msg) {
-  const err = document.getElementById('err-msg');
-  err.textContent = '⚠  ' + msg; err.classList.add('show');
-}
-
-function showDownload(name) {
-  document.getElementById('login-view').style.display = 'none';
-  document.getElementById('dl-name').textContent = 'Bienvenido, ' + name;
-  document.getElementById('dl-exe-btn').href = EXE_URL;
-  const v = document.getElementById('dl-view');
-  v.classList.add('show');
-}
-
-function logout() {
-  sessionStorage.removeItem('au_user');
-  document.getElementById('dl-view').classList.remove('show');
-  document.getElementById('login-view').style.display = 'block';
-  document.getElementById('usr').value = '';
-  document.getElementById('pwd').value = '';
-  document.getElementById('btn').disabled = false;
-  document.getElementById('btn').textContent = 'Acceder';
-}
-
-function trackDownload(type) {
-  // Registro local opcional — añade aquí analytics si quieres (ej. Plausible)
-  const user = JSON.parse(sessionStorage.getItem('au_user') || '{}');
-  console.log('[descarga]', type, user.id, new Date().toISOString());
-  return true; // permitir la descarga
-}
-
-// Restaurar sesión si el usuario recarga la página
-(function restoreSession() {
-  const saved = sessionStorage.getItem('au_user');
-  if (!saved) return;
-  try {
-    const u = JSON.parse(saved);
-    // Verificar que la cuenta sigue activa
-    const current = USERS[u.id];
-    if (current && current.active) showDownload(current.name);
-    else sessionStorage.removeItem('au_user');
-  } catch { sessionStorage.removeItem('au_user'); }
-})();
-</script>
-</body>
+      // Restaurar sesión si el usuario recarga la página
+      (function restoreSession() {
+        const saved = sessionStorage.getItem("au_user");
+        if (!saved) return;
+        try {
+          const u = JSON.parse(saved);
+          // Verificar que la cuenta sigue activa
+          const current = USERS[u.id];
+          if (current && current.active) showDownload(current.name);
+          else sessionStorage.removeItem("au_user");
+        } catch {
+          sessionStorage.removeItem("au_user");
+        }
+      })();
+    </script>
+  </body>
 </html>
