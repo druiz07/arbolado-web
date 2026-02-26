@@ -660,61 +660,128 @@
         >
         <div class="ft-links">
           <a href="#">Términos de uso</a>
-          <a href="mailto:soporte@arboladourbano.es">Soporte técnico</a>
+          <a
+            href="/cdn-cgi/l/email-protection#41322e312e333524012033232e2d20252e343323202f2e6f2432"
+            >Soporte técnico</a
+          >
         </div>
       </footer>
     </div>
 
+    <script
+      data-cfasync="false"
+      src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+    ></script>
     <script>
       // ═══════════════════════════════════════════════════════════════
-      //  CREDENCIALES DE USUARIOS
-      //  ─────────────────────────────────────────────────────────────
-      //  Para AÑADIR un usuario: añade una línea al objeto USERS
-      //  Para ELIMINAR acceso: borra la línea o pon active: false
-      //  Para CAMBIAR contraseña: edita el campo pass
-      //
-      //  ⚠  Sube siempre los cambios a GitHub — se publican solos en Pages
-      //
-      //  Formato de contraseña: usa mínimo 12 caracteres con mayúsculas,
-      //  números y símbolos para mayor seguridad.
       // ═══════════════════════════════════════════════════════════════
-      const USERS = {
-        // ── AÑADE AQUÍ TUS CLIENTES ──────────────────────────────────
-        // 'nombre_de_usuario': { pass: 'contraseña', name: 'Nombre visible', active: true }
+      //  DATOS CIFRADOS — no contienen información legible
+      //  URL cifrada con AES-256-GCM
+      //  Contraseñas derivadas con PBKDF2-SHA256 (310.000 iteraciones)
+      //  Clave AES dividida en 4 fragmentos para dificultar extracción
+      // ═══════════════════════════════════════════════════════════════
 
+      // Fragmentos de la clave AES (se unen en tiempo de ejecución)
+      const _a = "e19abe556c7e87c3";
+      const _b = "d2fb999f914c7eb8";
+      const _c = "9af59848bc163d7d";
+      const _d = "9f325904b1462a0e";
+      const _iv = "f1b763b4334ac683146b6257";
+      const _enc =
+        "75ab666726b6d3b7fe84d1fd65f18719bde754a79b466003e29fb67e9802ccd9d190caf9badf989791cd0a9dddbb341db415bd4861e51a79be49d24bffef49b42a2aa57c141eb58a9ef672d9d25a79335afd090ab754dcb3fbee6e1f8e35de18344bc3336063";
+      const _tag = "d7680fcfb37b4003004ecc899b848852";
+
+      // Usuarios — solo sal + hash PBKDF2, nunca la contraseña
+      const _U = {
         admin: {
-          pass: "Admin2025!Arbolado",
-          name: "Administrador",
-          active: true,
+          s: "c939dc01fbd259b781a2d3cc258e8b0e",
+          h: "dbf90b585f48bbf5a00f76d4932d4cff2f0681d63030b03b8c6f2daa22f6fd4a",
+          n: "Administrador",
+          a: true,
+        },
+        dani_admin: {
+          s: "d066e671b45c3467ddd9e55dc4c468c9",
+          h: "a95d7c93cf12cb9567ec4ce4d90495ecca9bd190faaeeda1720a920ff2fa711a",
+          n: "Dani Admin",
+          a: true,
         },
         ayto_madrid: {
-          pass: "Mad2025#Arbolado!",
-          name: "Ayuntamiento de Madrid",
-          active: true,
+          s: "cfc6a5662a22dc85417bead916f8e9ff",
+          h: "3ac3df47874a3f1b4a25877f0cbffa28b971b92ef2e6ac5bb7d64768f832af3d",
+          n: "Ayuntamiento de Madrid",
+          a: true,
         },
         garcia_paisajismo: {
-          pass: "Grc!Arbolado2025$",
-          name: "García Paisajismo SL",
-          active: true,
+          s: "970b4efa3a34da70d5b9d67b39f72bdf",
+          h: "ffee0d77d80a6a6b9290509fd537ec6d1b44a67247adf104f0c4aa4c65c444b1",
+          n: "García Paisajismo SL",
+          a: true,
         },
-        // 'cliente_inactivo':  { pass: 'xxx',                   name: 'Cliente pausado',         active: false },
-
-        // ── FIN DE LA LISTA ──────────────────────────────────────────
       };
 
-      // ─────────────────────────────────────────────────────────────
-      //  URL DEL INSTALADOR .EXE
-      //  Sube el .exe compilado a GitHub Releases y pega aquí la URL
-      //  Ejemplo: https://github.com/tu-usuario/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe
-      // ─────────────────────────────────────────────────────────────
-      const EXE_URL =
-        "https://github.com/druiz07/arbolado-app/releases/download/v1.0.0/Arbolado.Urbano.Setup.1.0.0.exe";
+      // ── Utilidades criptográficas (Web Crypto API nativa) ──────────
 
-      // ─────────────────────────────────────────────────────────────
-      //  LÓGICA DE AUTENTICACIÓN
-      // ─────────────────────────────────────────────────────────────
+      function _hex(buf) {
+        return Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+      function _unhex(hex) {
+        const b = new Uint8Array(hex.length / 2);
+        for (let i = 0; i < hex.length; i += 2)
+          b[i / 2] = parseInt(hex.slice(i, i + 2), 16);
+        return b;
+      }
 
-      function login() {
+      // PBKDF2: deriva hash de contraseña con sal única por usuario
+      async function _pbkdf2(password, saltHex) {
+        const enc = new TextEncoder();
+        const base = await crypto.subtle.importKey(
+          "raw",
+          enc.encode(password),
+          "PBKDF2",
+          false,
+          ["deriveBits"],
+        );
+        const bits = await crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            hash: "SHA-256",
+            salt: _unhex(saltHex),
+            iterations: 310000,
+          },
+          base,
+          256,
+        );
+        return _hex(bits);
+      }
+
+      // AES-256-GCM: descifra la URL en tiempo de ejecución
+      async function _decryptUrl() {
+        const keyBytes = _unhex(_a + _b + _c + _d);
+        const key = await crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          { name: "AES-GCM" },
+          false,
+          ["decrypt"],
+        );
+        const enc = _unhex(_enc);
+        const tag = _unhex(_tag);
+        const combined = new Uint8Array(enc.length + tag.length);
+        combined.set(enc);
+        combined.set(tag, enc.length);
+        const plain = await crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: _unhex(_iv), tagLength: 128 },
+          key,
+          combined,
+        );
+        return new TextDecoder().decode(plain);
+      }
+
+      // ── Lógica de autenticación ────────────────────────────────────
+
+      async function login() {
         const usr = document.getElementById("usr").value.trim().toLowerCase();
         const pwd = document.getElementById("pwd").value;
         const btn = document.getElementById("btn");
@@ -729,31 +796,35 @@
         btn.innerHTML = '<span class="spin"></span>Verificando…';
         err.classList.remove("show");
 
-        // Pequeño delay artificial para no parecer instantáneo
-        setTimeout(() => {
-          const user = USERS[usr];
-
-          if (!user || user.pass !== pwd) {
-            showErr("Usuario o contraseña incorrectos");
-            btn.disabled = false;
-            btn.textContent = "Acceder";
-            return;
-          }
-
-          if (!user.active) {
-            showErr("Tu licencia está suspendida. Contacta con el proveedor.");
-            btn.disabled = false;
-            btn.textContent = "Acceder";
-            return;
-          }
-
-          // ✓ Credenciales correctas
-          sessionStorage.setItem(
-            "au_user",
-            JSON.stringify({ id: usr, name: user.name }),
+        const user = _U[usr];
+        if (!user || !user.a) {
+          await new Promise((r) => setTimeout(r, 800));
+          showErr(
+            !user
+              ? "Usuario o contraseña incorrectos"
+              : "Tu licencia está suspendida. Contacta con el proveedor.",
           );
-          showDownload(user.name);
-        }, 600);
+          btn.disabled = false;
+          btn.textContent = "Acceder";
+          return;
+        }
+
+        // Derivar hash PBKDF2 de la contraseña introducida y comparar
+        const derived = await _pbkdf2(pwd, user.s);
+        if (derived !== user.h) {
+          showErr("Usuario o contraseña incorrectos");
+          btn.disabled = false;
+          btn.textContent = "Acceder";
+          return;
+        }
+
+        // ✓ Credenciales correctas — descifrar URL solo ahora
+        const url = await _decryptUrl();
+        sessionStorage.setItem(
+          "au_user",
+          JSON.stringify({ id: usr, name: user.n }),
+        );
+        showDownload(user.n, url);
       }
 
       function showErr(msg) {
@@ -762,12 +833,11 @@
         err.classList.add("show");
       }
 
-      function showDownload(name) {
+      function showDownload(name, url) {
         document.getElementById("login-view").style.display = "none";
         document.getElementById("dl-name").textContent = "Bienvenido, " + name;
-        document.getElementById("dl-exe-btn").href = EXE_URL;
-        const v = document.getElementById("dl-view");
-        v.classList.add("show");
+        document.getElementById("dl-exe-btn").href = url;
+        document.getElementById("dl-view").classList.add("show");
       }
 
       function logout() {
@@ -781,22 +851,22 @@
       }
 
       function trackDownload(type) {
-        // Registro local opcional — añade aquí analytics si quieres (ej. Plausible)
         const user = JSON.parse(sessionStorage.getItem("au_user") || "{}");
         console.log("[descarga]", type, user.id, new Date().toISOString());
-        return true; // permitir la descarga
+        return true;
       }
 
-      // Restaurar sesión si el usuario recarga la página
       (function restoreSession() {
         const saved = sessionStorage.getItem("au_user");
         if (!saved) return;
         try {
           const u = JSON.parse(saved);
-          // Verificar que la cuenta sigue activa
-          const current = USERS[u.id];
-          if (current && current.active) showDownload(current.name);
-          else sessionStorage.removeItem("au_user");
+          const current = _U[u.id];
+          if (current && current.a) {
+            _decryptUrl().then((url) => showDownload(current.n, url));
+          } else {
+            sessionStorage.removeItem("au_user");
+          }
         } catch {
           sessionStorage.removeItem("au_user");
         }
