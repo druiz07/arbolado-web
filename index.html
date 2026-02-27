@@ -660,12 +660,19 @@
         >
         <div class="ft-links">
           <a href="#">Términos de uso</a>
-          <a href="/cdn-cgi/l/email-protection#41322e312e333524012033232e2d20252e343323202f2e6f2432">Soporte técnico</a>
+          <a
+            href="/cdn-cgi/l/email-protection#41322e312e333524012033232e2d20252e343323202f2e6f2432"
+            >Soporte técnico</a
+          >
         </div>
       </footer>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script
+      data-cfasync="false"
+      src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
+    ></script>
+    <script>
       // ═══════════════════════════════════════════════════════════════
       // ═══════════════════════════════════════════════════════════════
       //  DATOS CIFRADOS — no contienen información legible
@@ -679,8 +686,9 @@
       const _b = "d2fb999f914c7eb8";
       const _c = "9af59848bc163d7d";
       const _d = "9f325904b1462a0e";
-      const _iv  = "f1b763b4334ac683146b6257";
-      const _enc = "75ab666726b6d3b7fe84d1fd65f18719bde754a79b466003e29fb67e9802ccd9d190caf9badf989791cd0a9dddbb341db415bd4861e51a79be49d24bffef49b42a2aa57c141eb58a9ef672d9d25a79335afd090ab754dcb3fbee6e1f8e35de18344bc3336063";
+      const _iv = "f1b763b4334ac683146b6257";
+      const _enc =
+        "75ab666726b6d3b7fe84d1fd65f18719bde754a79b466003e29fb67e9802ccd9d190caf9badf989791cd0a9dddbb341db415bd4861e51a79be49d24bffef49b42a2aa57c141eb58a9ef672d9d25a79335afd090ab754dcb3fbee6e1f8e35de18344bc3336063";
       const _tag = "d7680fcfb37b4003004ecc899b848852";
 
       // Usuarios — solo sal + hash PBKDF2, nunca la contraseña
@@ -688,43 +696,62 @@
         admin: {
           s: "9e4b5cac38235975681f2c21b416f621",
           h: "ce3f1403841e50d862bb2ad9a9c9b3c278d20bb6881daa8b0723695539709724",
-          n: "Administrador", a: true
+          n: "Administrador",
+          a: true,
         },
         ayto_madrid: {
           s: "3f86c0971f94b588417cdf5af4e51b35",
           h: "13de9cdd793dbe3943ac1a7b89ebf475471ec48e06ffaa754d5256af4c92b359",
-          n: "Ayuntamiento de Madrid", a: true
+          n: "Ayuntamiento de Madrid",
+          a: true,
         },
         garcia_paisajismo: {
           s: "4df49d0b7e142a0cfffaec6eb06d0882",
           h: "3d1914c0a26dcbaffb4f6d50ea378fa3019b4d0d02c20227625231e0f57914db",
-          n: "García Paisajismo SL", a: true
+          n: "García Paisajismo SL",
+          a: true,
         },
         administrador: {
           s: "e86bdf106bd464324bb57fc18ccd0ebd",
           h: "ecd3bfee94cd92a08d7d8b0f27055cb9306c4fe99fae7c5fd81c632827e8ebf1",
-          n: "Administrador", a: true
+          n: "Administrador",
+          a: true,
         },
       };
 
       // ── Utilidades criptográficas (Web Crypto API nativa) ──────────
 
       function _hex(buf) {
-        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+        return Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
       }
       function _unhex(hex) {
-        const b = new Uint8Array(hex.length/2);
-        for(let i=0;i<hex.length;i+=2) b[i/2]=parseInt(hex.slice(i,i+2),16);
+        const b = new Uint8Array(hex.length / 2);
+        for (let i = 0; i < hex.length; i += 2)
+          b[i / 2] = parseInt(hex.slice(i, i + 2), 16);
         return b;
       }
 
       // PBKDF2: deriva hash de contraseña con sal única por usuario
       async function _pbkdf2(password, saltHex) {
-        const enc  = new TextEncoder();
-        const base = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]);
+        const enc = new TextEncoder();
+        const base = await crypto.subtle.importKey(
+          "raw",
+          enc.encode(password),
+          "PBKDF2",
+          false,
+          ["deriveBits"],
+        );
         const bits = await crypto.subtle.deriveBits(
-          { name:"PBKDF2", hash:"SHA-256", salt:_unhex(saltHex), iterations:310000 },
-          base, 256
+          {
+            name: "PBKDF2",
+            hash: "SHA-256",
+            salt: _unhex(saltHex),
+            iterations: 310000,
+          },
+          base,
+          256,
         );
         return _hex(bits);
       }
@@ -732,27 +759,116 @@
       // AES-256-GCM: descifra la URL en tiempo de ejecución
       async function _decryptUrl() {
         const keyBytes = _unhex(_a + _b + _c + _d);
-        const key = await crypto.subtle.importKey("raw", keyBytes, {name:"AES-GCM"}, false, ["decrypt"]);
+        const key = await crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          { name: "AES-GCM" },
+          false,
+          ["decrypt"],
+        );
         const enc = _unhex(_enc);
         const tag = _unhex(_tag);
         const combined = new Uint8Array(enc.length + tag.length);
-        combined.set(enc); combined.set(tag, enc.length);
+        combined.set(enc);
+        combined.set(tag, enc.length);
         const plain = await crypto.subtle.decrypt(
-          { name:"AES-GCM", iv:_unhex(_iv), tagLength:128 },
-          key, combined
+          { name: "AES-GCM", iv: _unhex(_iv), tagLength: 128 },
+          key,
+          combined,
         );
         return new TextDecoder().decode(plain);
       }
 
       // ── Lógica de autenticación ────────────────────────────────────
 
+      // ── HUELLA DE DISPOSITIVO ──────────────────────────────────────
+      // Combina 6 señales de hardware/software para crear un ID único
+      // del dispositivo. Se genera igual en cada visita desde el mismo
+      // navegador+ordenador. Cambia si se usa otro ordenador o navegador.
+
+      async function _fingerprint() {
+        const signals = [];
+
+        // 1. Canvas fingerprint — depende de GPU y drivers
+        try {
+          const c = document.createElement("canvas");
+          const ctx = c.getContext("2d");
+          ctx.textBaseline = "top";
+          ctx.font = "14px 'Arial'";
+          ctx.fillStyle = "#1a3320";
+          ctx.fillRect(0, 0, 100, 30);
+          ctx.fillStyle = "#c8a84b";
+          ctx.fillText("ArboladoFP🌳", 2, 4);
+          signals.push(c.toDataURL());
+        } catch {
+          signals.push("canvas-err");
+        }
+
+        // 2. WebGL renderer — identifica la GPU
+        try {
+          const gl = document.createElement("canvas").getContext("webgl");
+          const ext = gl.getExtension("WEBGL_debug_renderer_info");
+          signals.push(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL));
+          signals.push(gl.getParameter(ext.UNMASKED_VENDOR_WEBGL));
+        } catch {
+          signals.push("webgl-err");
+        }
+
+        // 3. Señales de sistema
+        signals.push(navigator.language || "");
+        signals.push(navigator.platform || "");
+        signals.push(
+          screen.width + "x" + screen.height + "x" + screen.colorDepth,
+        );
+        signals.push(Intl.DateTimeFormat().resolvedOptions().timeZone || "");
+        signals.push(navigator.hardwareConcurrency || "");
+        signals.push(navigator.deviceMemory || "");
+
+        // 4. Plugins del navegador
+        signals.push(
+          Array.from(navigator.plugins || [])
+            .map((p) => p.name)
+            .join(","),
+        );
+
+        // Hash SHA-256 de todas las señales combinadas
+        const raw = signals.join("|");
+        const buf = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(raw),
+        );
+        return _hex(buf);
+      }
+
+      // Clave de localStorage para vincular usuario→dispositivo
+      function _fpKey(usr) {
+        return "_au_fp_" + usr;
+      }
+
+      // Comprueba si el dispositivo actual está autorizado para este usuario
+      async function _checkDevice(usr) {
+        const fp = await _fingerprint();
+        const stored = localStorage.getItem(_fpKey(usr));
+
+        if (!stored) {
+          // Primera vez — registrar este dispositivo
+          localStorage.setItem(_fpKey(usr), fp);
+          return true;
+        }
+        return stored === fp;
+      }
+
+      // ── LOGIN ──────────────────────────────────────────────────────
       async function login() {
         const usr = document.getElementById("usr").value.trim().toLowerCase();
         const pwd = document.getElementById("pwd").value;
         const btn = document.getElementById("btn");
         const err = document.getElementById("err-msg");
 
-        if (!usr || !pwd) { showErr("Introduce usuario y contraseña"); return; }
+        if (!usr || !pwd) {
+          showErr("Introduce usuario y contraseña");
+          return;
+        }
 
         btn.disabled = true;
         btn.innerHTML = '<span class="spin"></span>Verificando…';
@@ -760,29 +876,50 @@
 
         const user = _U[usr];
         if (!user || !user.a) {
-          await new Promise(r => setTimeout(r, 800));
-          showErr(!user ? "Usuario o contraseña incorrectos" : "Tu licencia está suspendida. Contacta con el proveedor.");
-          btn.disabled = false; btn.textContent = "Acceder";
+          await new Promise((r) => setTimeout(r, 800));
+          showErr(
+            !user
+              ? "Usuario o contraseña incorrectos"
+              : "Tu licencia está suspendida. Contacta con el proveedor.",
+          );
+          btn.disabled = false;
+          btn.textContent = "Acceder";
           return;
         }
 
-        // Derivar hash PBKDF2 de la contraseña introducida y comparar
+        // 1 — Verificar contraseña con PBKDF2
         const derived = await _pbkdf2(pwd, user.s);
         if (derived !== user.h) {
           showErr("Usuario o contraseña incorrectos");
-          btn.disabled = false; btn.textContent = "Acceder";
+          btn.disabled = false;
+          btn.textContent = "Acceder";
           return;
         }
 
-        // ✓ Credenciales correctas — descifrar URL solo ahora
+        // 2 — Verificar dispositivo autorizado
+        const deviceOk = await _checkDevice(usr);
+        if (!deviceOk) {
+          showErr(
+            "Esta licencia ya está vinculada a otro dispositivo. Contacta con el proveedor para transferirla.",
+          );
+          btn.disabled = false;
+          btn.textContent = "Acceder";
+          return;
+        }
+
+        // ✓ Todo correcto — descifrar URL y mostrar descarga
         const url = await _decryptUrl();
-        sessionStorage.setItem("au_user", JSON.stringify({ id: usr, name: user.n }));
+        sessionStorage.setItem(
+          "au_user",
+          JSON.stringify({ id: usr, name: user.n }),
+        );
         showDownload(user.n, url);
       }
 
       function showErr(msg) {
         const err = document.getElementById("err-msg");
-        err.textContent = "⚠  " + msg; err.classList.add("show");
+        err.textContent = "⚠  " + msg;
+        err.classList.add("show");
       }
 
       function showDownload(name, url) {
@@ -815,13 +952,14 @@
           const u = JSON.parse(saved);
           const current = _U[u.id];
           if (current && current.a) {
-            _decryptUrl().then(url => showDownload(current.n, url));
+            _decryptUrl().then((url) => showDownload(current.n, url));
           } else {
             sessionStorage.removeItem("au_user");
           }
-        } catch { sessionStorage.removeItem("au_user"); }
+        } catch {
+          sessionStorage.removeItem("au_user");
+        }
       })();
-
     </script>
   </body>
 </html>
