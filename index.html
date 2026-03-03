@@ -687,9 +687,8 @@
       const _c = "9af59848bc163d7d";
       const _d = "9f325904b1462a0e";
       const _iv = "f1b763b4334ac683146b6257";
-      const _enc =
-        "75ab666726b6d3b7fe84d1fd65f18719bde754a79b466003e29fb67e9802ccd9d190caf9badf989791cd0a9dddbb341db415bd4861e51a79be49d24bffef49b42a2aa57c141eb58a9efd159be549753d1ac1494cf27797f6a0af651d9061884d";
-      const _tag = "2206742913d79290ac73ab0a012ef043";
+      // URL cifrada — se carga desde exe-url.json (sin caché) para propagar
+      // actualizaciones al instante sin modificar este archivo.
 
       // Usuarios — solo sal + hash PBKDF2, nunca la contraseña
       const _U = {
@@ -758,6 +757,10 @@
 
       // AES-256-GCM: descifra la URL en tiempo de ejecución
       async function _decryptUrl() {
+        // Carga exe-url.json sin caché → los cambios de URL se propagan al instante
+        const cfg = await fetch("exe-url.json", { cache: "no-store" }).then(
+          (r) => r.json(),
+        );
         const keyBytes = _unhex(_a + _b + _c + _d);
         const key = await crypto.subtle.importKey(
           "raw",
@@ -766,8 +769,8 @@
           false,
           ["decrypt"],
         );
-        const enc = _unhex(_enc);
-        const tag = _unhex(_tag);
+        const enc = _unhex(cfg.enc);
+        const tag = _unhex(cfg.tag);
         const combined = new Uint8Array(enc.length + tag.length);
         combined.set(enc);
         combined.set(tag, enc.length);
