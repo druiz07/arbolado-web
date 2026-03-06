@@ -672,10 +672,10 @@
       data-cfasync="false"
       src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
     ></script>
-        <script>
+    <script>
       // URL del Cloudflare Worker de autenticacion
       // Reemplaza REEMPLAZAR con tu subdominio en Cloudflare Workers
-      const WORKER_URL = "https://arbolado-auth.REEMPLAZAR.workers.dev";
+      const WORKER_URL = "https://arbolado-auth.arbolado-auth.workers.dev";
 
       // Huella de dispositivo (capa de seguridad local adicional)
 
@@ -798,7 +798,10 @@
         // Login correcto
         const token = data.token;
         const name = data.name;
-        sessionStorage.setItem("au_user", JSON.stringify({ id: usr, name: name }));
+        sessionStorage.setItem(
+          "au_user",
+          JSON.stringify({ id: usr, name: name }),
+        );
         showDownload(name, token);
       }
 
@@ -812,7 +815,8 @@
         document.getElementById("login-view").style.display = "none";
         document.getElementById("dl-name").textContent = "Bienvenido, " + name;
         const dlBtn = document.getElementById("dl-exe-btn");
-        dlBtn.href = WORKER_URL + "/download?token=" + encodeURIComponent(token);
+        dlBtn.href =
+          WORKER_URL + "/download?token=" + encodeURIComponent(token);
         document.getElementById("dl-view").classList.add("show");
       }
 
