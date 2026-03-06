@@ -672,127 +672,22 @@
       data-cfasync="false"
       src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
     ></script>
-    <script>
-      // ═══════════════════════════════════════════════════════════════
-      // ═══════════════════════════════════════════════════════════════
-      //  DATOS CIFRADOS — no contienen información legible
-      //  URL cifrada con AES-256-GCM
-      //  Contraseñas derivadas con PBKDF2-SHA256 (310.000 iteraciones)
-      //  Clave AES dividida en 4 fragmentos para dificultar extracción
-      // ═══════════════════════════════════════════════════════════════
+        <script>
+      // URL del Cloudflare Worker de autenticacion
+      // Reemplaza REEMPLAZAR con tu subdominio en Cloudflare Workers
+      const WORKER_URL = "https://arbolado-auth.REEMPLAZAR.workers.dev";
 
-      // Fragmentos de la clave AES (se unen en tiempo de ejecución)
-      const _a = "e19abe556c7e87c3";
-      const _b = "d2fb999f914c7eb8";
-      const _c = "9af59848bc163d7d";
-      const _d = "9f325904b1462a0e";
-      const _iv = "f1b763b4334ac683146b6257";
-      // URL cifrada — se carga desde exe-url.json (sin caché) para propagar
-      // actualizaciones al instante sin modificar este archivo.
-
-      // Usuarios — solo sal + hash PBKDF2, nunca la contraseña
-      const _U = {
-        admin: {
-          s: "9e4b5cac38235975681f2c21b416f621",
-          h: "ce3f1403841e50d862bb2ad9a9c9b3c278d20bb6881daa8b0723695539709724",
-          n: "Administrador",
-          a: true,
-        },
-        ayto_madrid: {
-          s: "3f86c0971f94b588417cdf5af4e51b35",
-          h: "13de9cdd793dbe3943ac1a7b89ebf475471ec48e06ffaa754d5256af4c92b359",
-          n: "Ayuntamiento de Madrid",
-          a: true,
-        },
-        garcia_paisajismo: {
-          s: "4df49d0b7e142a0cfffaec6eb06d0882",
-          h: "3d1914c0a26dcbaffb4f6d50ea378fa3019b4d0d02c20227625231e0f57914db",
-          n: "García Paisajismo SL",
-          a: true,
-        },
-        administrador: {
-          s: "e86bdf106bd464324bb57fc18ccd0ebd",
-          h: "ecd3bfee94cd92a08d7d8b0f27055cb9306c4fe99fae7c5fd81c632827e8ebf1",
-          n: "Administrador",
-          a: true,
-        },
-      };
-
-      // ── Utilidades criptográficas (Web Crypto API nativa) ──────────
+      // Huella de dispositivo (capa de seguridad local adicional)
 
       function _hex(buf) {
         return Array.from(new Uint8Array(buf))
           .map((b) => b.toString(16).padStart(2, "0"))
           .join("");
       }
-      function _unhex(hex) {
-        const b = new Uint8Array(hex.length / 2);
-        for (let i = 0; i < hex.length; i += 2)
-          b[i / 2] = parseInt(hex.slice(i, i + 2), 16);
-        return b;
-      }
-
-      // PBKDF2: deriva hash de contraseña con sal única por usuario
-      async function _pbkdf2(password, saltHex) {
-        const enc = new TextEncoder();
-        const base = await crypto.subtle.importKey(
-          "raw",
-          enc.encode(password),
-          "PBKDF2",
-          false,
-          ["deriveBits"],
-        );
-        const bits = await crypto.subtle.deriveBits(
-          {
-            name: "PBKDF2",
-            hash: "SHA-256",
-            salt: _unhex(saltHex),
-            iterations: 310000,
-          },
-          base,
-          256,
-        );
-        return _hex(bits);
-      }
-
-      // AES-256-GCM: descifra la URL en tiempo de ejecución
-      async function _decryptUrl() {
-        // Carga exe-url.json sin caché → los cambios de URL se propagan al instante
-        const cfg = await fetch("exe-url.json", { cache: "no-store" }).then(
-          (r) => r.json(),
-        );
-        const keyBytes = _unhex(_a + _b + _c + _d);
-        const key = await crypto.subtle.importKey(
-          "raw",
-          keyBytes,
-          { name: "AES-GCM" },
-          false,
-          ["decrypt"],
-        );
-        const enc = _unhex(cfg.enc);
-        const tag = _unhex(cfg.tag);
-        const combined = new Uint8Array(enc.length + tag.length);
-        combined.set(enc);
-        combined.set(tag, enc.length);
-        const plain = await crypto.subtle.decrypt(
-          { name: "AES-GCM", iv: _unhex(_iv), tagLength: 128 },
-          key,
-          combined,
-        );
-        return new TextDecoder().decode(plain);
-      }
-
-      // ── Lógica de autenticación ────────────────────────────────────
-
-      // ── HUELLA DE DISPOSITIVO ──────────────────────────────────────
-      // Combina 6 señales de hardware/software para crear un ID único
-      // del dispositivo. Se genera igual en cada visita desde el mismo
-      // navegador+ordenador. Cambia si se usa otro ordenador o navegador.
 
       async function _fingerprint() {
         const signals = [];
 
-        // 1. Canvas fingerprint — depende de GPU y drivers
         try {
           const c = document.createElement("canvas");
           const ctx = c.getContext("2d");
@@ -801,13 +696,12 @@
           ctx.fillStyle = "#1a3320";
           ctx.fillRect(0, 0, 100, 30);
           ctx.fillStyle = "#c8a84b";
-          ctx.fillText("ArboladoFP🌳", 2, 4);
+          ctx.fillText("ArboladoFP", 2, 4);
           signals.push(c.toDataURL());
         } catch {
           signals.push("canvas-err");
         }
 
-        // 2. WebGL renderer — identifica la GPU
         try {
           const gl = document.createElement("canvas").getContext("webgl");
           const ext = gl.getExtension("WEBGL_debug_renderer_info");
@@ -817,7 +711,6 @@
           signals.push("webgl-err");
         }
 
-        // 3. Señales de sistema
         signals.push(navigator.language || "");
         signals.push(navigator.platform || "");
         signals.push(
@@ -826,15 +719,12 @@
         signals.push(Intl.DateTimeFormat().resolvedOptions().timeZone || "");
         signals.push(navigator.hardwareConcurrency || "");
         signals.push(navigator.deviceMemory || "");
-
-        // 4. Plugins del navegador
         signals.push(
           Array.from(navigator.plugins || [])
             .map((p) => p.name)
             .join(","),
         );
 
-        // Hash SHA-256 de todas las señales combinadas
         const raw = signals.join("|");
         const buf = await crypto.subtle.digest(
           "SHA-256",
@@ -843,30 +733,25 @@
         return _hex(buf);
       }
 
-      // Clave de localStorage para vincular usuario→dispositivo
       function _fpKey(usr) {
         return "_au_fp_" + usr;
       }
 
-      // Comprueba si el dispositivo actual está autorizado para este usuario
       async function _checkDevice(usr) {
         const fp = await _fingerprint();
         const stored = localStorage.getItem(_fpKey(usr));
-
         if (!stored) {
-          // Primera vez — registrar este dispositivo
           localStorage.setItem(_fpKey(usr), fp);
           return true;
         }
         return stored === fp;
       }
 
-      // ── LOGIN ──────────────────────────────────────────────────────
+      // LOGIN
       async function login() {
         const usr = document.getElementById("usr").value.trim().toLowerCase();
         const pwd = document.getElementById("pwd").value;
         const btn = document.getElementById("btn");
-        const err = document.getElementById("err-msg");
 
         if (!usr || !pwd) {
           showErr("Introduce usuario y contraseña");
@@ -875,31 +760,9 @@
 
         btn.disabled = true;
         btn.innerHTML = '<span class="spin"></span>Verificando…';
-        err.classList.remove("show");
+        document.getElementById("err-msg").classList.remove("show");
 
-        const user = _U[usr];
-        if (!user || !user.a) {
-          await new Promise((r) => setTimeout(r, 800));
-          showErr(
-            !user
-              ? "Usuario o contraseña incorrectos"
-              : "Tu licencia está suspendida. Contacta con el proveedor.",
-          );
-          btn.disabled = false;
-          btn.textContent = "Acceder";
-          return;
-        }
-
-        // 1 — Verificar contraseña con PBKDF2
-        const derived = await _pbkdf2(pwd, user.s);
-        if (derived !== user.h) {
-          showErr("Usuario o contraseña incorrectos");
-          btn.disabled = false;
-          btn.textContent = "Acceder";
-          return;
-        }
-
-        // 2 — Verificar dispositivo autorizado
+        // Capa local: verificar dispositivo vinculado
         const deviceOk = await _checkDevice(usr);
         if (!deviceOk) {
           showErr(
@@ -910,13 +773,33 @@
           return;
         }
 
-        // ✓ Todo correcto — descifrar URL y mostrar descarga
-        const url = await _decryptUrl();
-        sessionStorage.setItem(
-          "au_user",
-          JSON.stringify({ id: usr, name: user.n }),
-        );
-        showDownload(user.n, url);
+        // Autenticar con el Cloudflare Worker (credenciales validadas en servidor)
+        let data;
+        try {
+          const res = await fetch(WORKER_URL + "/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: usr, password: pwd }),
+          });
+          data = await res.json();
+          if (!res.ok) {
+            showErr(data.error || "Usuario o contraseña incorrectos");
+            btn.disabled = false;
+            btn.textContent = "Acceder";
+            return;
+          }
+        } catch {
+          showErr("Error de conexión. Verifica tu red e inténtalo de nuevo.");
+          btn.disabled = false;
+          btn.textContent = "Acceder";
+          return;
+        }
+
+        // Login correcto
+        const token = data.token;
+        const name = data.name;
+        sessionStorage.setItem("au_user", JSON.stringify({ id: usr, name: name }));
+        showDownload(name, token);
       }
 
       function showErr(msg) {
@@ -925,10 +808,11 @@
         err.classList.add("show");
       }
 
-      function showDownload(name, url) {
+      function showDownload(name, token) {
         document.getElementById("login-view").style.display = "none";
         document.getElementById("dl-name").textContent = "Bienvenido, " + name;
-        document.getElementById("dl-exe-btn").href = url;
+        const dlBtn = document.getElementById("dl-exe-btn");
+        dlBtn.href = WORKER_URL + "/download?token=" + encodeURIComponent(token);
         document.getElementById("dl-view").classList.add("show");
       }
 
@@ -947,22 +831,6 @@
         console.log("[descarga]", type, user.id, new Date().toISOString());
         return true;
       }
-
-      (function restoreSession() {
-        const saved = sessionStorage.getItem("au_user");
-        if (!saved) return;
-        try {
-          const u = JSON.parse(saved);
-          const current = _U[u.id];
-          if (current && current.a) {
-            _decryptUrl().then((url) => showDownload(current.n, url));
-          } else {
-            sessionStorage.removeItem("au_user");
-          }
-        } catch {
-          sessionStorage.removeItem("au_user");
-        }
-      })();
     </script>
   </body>
 </html>

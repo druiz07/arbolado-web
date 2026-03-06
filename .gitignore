@@ -1,0 +1,6 @@
+# URL del exe — se gestiona como secreto en el Cloudflare Worker
+exe-url.json
+
+# Archivos de entorno locales
+*.env
+.env.local
