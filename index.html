@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arbolado Urbano — Selección profesional de arbolado urbano</title>
-  <meta name="description" content="Herramienta profesional para la selección de especies de arbolado urbano. Datos climáticos reales de AEMET, asistente técnico y exportación a PDF." />
+  <title>Arbolado Urbano — Selección técnica de arbolado urbano para servicios municipales</title>
+  <meta name="description" content="Software de escritorio para técnicos municipales. Selección documentada de especies de arbolado urbano con datos AEMET reales, asistente técnico paso a paso y exportación a PDF lista para expediente." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -53,8 +53,9 @@
     .nav-logo-icon {
       width: 34px; height: 34px; border-radius: 9px;
       background: linear-gradient(135deg, var(--fern), var(--sage));
-      display: flex; align-items: center; justify-content: center; font-size: 17px;
+      display: flex; align-items: center; justify-content: center;
     }
+    .nav-logo-icon svg { color: var(--cream); }
     .nav-logo-text {
       font-family: "Cormorant Garamond", serif;
       font-size: 17px; font-weight: 600; color: var(--cream); letter-spacing: 0.3px;
@@ -66,7 +67,7 @@
     }
 
     /* ── HERO ── */
-    .hero { text-align: center; margin-bottom: 60px; }
+    .hero { text-align: center; margin-bottom: 64px; }
 
     .hero-eyebrow {
       display: inline-block; font-size: 11px; letter-spacing: 3px;
@@ -77,13 +78,13 @@
 
     .hero-title {
       font-family: "Cormorant Garamond", serif;
-      font-size: clamp(28px, 5vw, 42px); font-weight: 600; line-height: 1.2;
+      font-size: clamp(28px, 5vw, 44px); font-weight: 600; line-height: 1.15;
       color: var(--cream); margin-bottom: 18px;
     }
 
     .hero-sub {
-      font-size: 15px; color: rgba(242,237,228,0.52); line-height: 1.7;
-      margin-bottom: 38px; max-width: 480px; margin-left: auto; margin-right: auto;
+      font-size: 15px; color: rgba(242,237,228,0.58); line-height: 1.7;
+      margin-bottom: 38px; max-width: 500px; margin-left: auto; margin-right: auto;
     }
 
     /* ── EMAIL GATE ── */
@@ -95,7 +96,7 @@
     }
 
     .gate-label {
-      font-size: 13px; color: rgba(255,255,255,0.48);
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6);
       margin-bottom: 14px; text-align: left;
     }
 
@@ -126,9 +127,14 @@
     .gate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .gate-note {
-      font-size: 11px; color: rgba(255,255,255,0.28);
-      margin-top: 11px; text-align: center;
+      font-size: 11px; color: rgba(255,255,255,0.3);
+      margin-top: 12px; text-align: center; line-height: 1.6;
     }
+    .gate-note a {
+      color: rgba(143,188,143,0.7); text-decoration: underline;
+      cursor: pointer;
+    }
+    .gate-note a:hover { color: var(--mint); }
 
     .gate-error {
       font-size: 12px; color: #f08080;
@@ -154,10 +160,65 @@
     }
     .dl-link:hover { opacity: 0.9; transform: translateY(-2px); }
 
+    /* ── SECCIÓN TÍTULOS ── */
+    .section-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(20px, 3vw, 26px); font-weight: 600;
+      color: var(--cream); text-align: center;
+      margin-bottom: 36px;
+    }
+
+    /* ── CÓMO FUNCIONA ── */
+    .how-it-works { margin-bottom: 72px; }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    @media (max-width: 600px) {
+      .steps { grid-template-columns: 1fr; gap: 24px; }
+      .step-connector { display: none; }
+    }
+
+    .step {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; position: relative; padding: 0 16px;
+    }
+
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute; top: 20px; left: calc(50% + 28px);
+      width: calc(100% - 56px); height: 1px;
+      background: linear-gradient(90deg, rgba(106,176,76,0.4), rgba(106,176,76,0.1));
+    }
+    @media (max-width: 600px) {
+      .step:not(:last-child)::after { display: none; }
+    }
+
+    .step-number {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(106,176,76,0.12);
+      border: 1px solid rgba(106,176,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: var(--mint);
+      margin-bottom: 16px; flex-shrink: 0; position: relative; z-index: 1;
+    }
+
+    .step-title {
+      font-size: 13px; font-weight: 600;
+      color: #e8f5e9; margin-bottom: 8px; line-height: 1.35;
+    }
+
+    .step-desc {
+      font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.65;
+    }
+
     /* ── FEATURES ── */
+    .features-section { margin-bottom: 64px; }
+
     .features {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 18px; margin-bottom: 56px;
+      gap: 18px;
     }
     @media (max-width: 600px) {
       .features { grid-template-columns: 1fr; }
@@ -168,7 +229,15 @@
       border: 1px solid rgba(255,255,255,0.07);
       border-radius: 13px; padding: 22px 20px;
     }
-    .feature-icon { font-size: 26px; margin-bottom: 13px; }
+
+    .feature-icon-svg {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(106,176,76,0.1);
+      border: 1px solid rgba(106,176,76,0.18);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px; color: var(--mint);
+    }
+
     .feature-title {
       font-size: 13px; font-weight: 600;
       color: #e8f5e9; margin-bottom: 7px; line-height: 1.35;
@@ -177,21 +246,97 @@
       font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.6;
     }
 
+    /* ── PARA QUIÉN ── */
+    .for-who { margin-bottom: 64px; }
+
+    .audience-list {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .audience-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 18px 20px;
+    }
+
+    .audience-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border-radius: 8px;
+      background: rgba(106,176,76,0.1);
+      border: 1px solid rgba(106,176,76,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--mint); margin-top: 1px;
+    }
+
+    .audience-title {
+      font-size: 13px; font-weight: 600;
+      color: #e8f5e9; margin-bottom: 4px;
+    }
+
+    .audience-desc {
+      font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.6;
+    }
+
+    /* ── REQUISITOS ── */
+    .requirements {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 13px; padding: 24px 28px;
+      margin-bottom: 56px;
+    }
+
+    .req-header {
+      font-size: 12px; font-weight: 600;
+      color: rgba(143,188,143,0.7);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .req-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 10px 32px;
+    }
+    @media (max-width: 500px) {
+      .req-grid { grid-template-columns: 1fr; }
+    }
+
+    .req-item {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5;
+    }
+
+    .req-item svg { flex-shrink: 0; color: var(--mint); margin-top: 2px; }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid rgba(255,255,255,0.06);
-      padding-top: 26px; margin-top: 56px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
+      padding-top: 26px; margin-top: 0;
+      display: flex; flex-direction: column; gap: 10px;
       font-size: 12px; color: rgba(255,255,255,0.28);
     }
+
+    .ft-top {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .ft-creator {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+    }
+
+    .ft-links { display: flex; flex-wrap: wrap; gap: 4px 0; }
     .ft-links a {
       color: rgba(255,255,255,0.38); text-decoration: none;
       margin-left: 18px; transition: color 0.2s;
     }
     .ft-links a:hover { color: var(--mint); }
 
-    /* ── MODAL TÉRMINOS ── */
+    .ft-bottom {
+      font-size: 11px; color: rgba(255,255,255,0.2);
+    }
+
+    /* ── MODAL BASE ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0; z-index: 999;
       background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
@@ -223,6 +368,10 @@
       line-height: 1.7;
     }
 
+    .modal a {
+      color: var(--mint);
+    }
+
     .modal-close {
       display: block; width: 100%; margin-top: 28px;
       background: rgba(255,255,255,0.07);
@@ -244,6 +393,7 @@
       flex-shrink: 0;
     }
   </style>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="3f4007a9-289a-4c37-af50-b4796bb9a175"></script>
 </head>
 <body>
 
@@ -252,68 +402,197 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <div class="nav-logo-icon">🌿</div>
+      <div class="nav-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
+          <path d="M12 12C12 7 7 4 7 4s1 5 5 8"/><path d="M12 12C12 7 17 4 17 4s-1 5-5 8"/>
+        </svg>
+      </div>
       <span class="nav-logo-text">Arbolado Urbano</span>
     </div>
-    <span class="nav-badge">v1.0 · Windows</span>
+    <span class="nav-badge">v1.0.4 · Windows</span>
   </nav>
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-eyebrow">Software profesional · Descarga gratuita</div>
-    <h1 class="hero-title">La herramienta del técnico<br/>para elegir el árbol correcto</h1>
-    <p class="hero-sub">Para jardineros, arquitectos paisajistas y técnicos municipales.<br/>Introduce tu email y descarga el instalador para Windows.</p>
+    <h1 class="hero-title">Selección técnica de arbolado urbano<br/>para servicios municipales</h1>
+    <p class="hero-sub">Toma decisiones de arbolado documentadas y exporta informes listos para expediente. Datos climáticos reales de AEMET integrados para cada municipio.</p>
 
     <!-- Email gate -->
     <div class="email-gate" id="gate-form">
-      <div class="gate-label">Introduce tu email para acceder a la descarga</div>
+      <div class="gate-label">Tu email · La descarga comienza al instante</div>
       <div class="gate-row">
         <input class="gate-input" type="email" id="gate-email"
           placeholder="tu@email.com" autocomplete="email" />
         <button class="gate-btn" id="gate-btn" onclick="submitGate()">
           <span class="spinner" id="gate-spinner"></span>
-          <span id="gate-btn-text">↓ Descargar</span>
+          <span id="gate-btn-text">↓ Descargar gratis</span>
         </button>
       </div>
       <div class="gate-error" id="gate-error"></div>
-      <div class="gate-note">Sin spam · Solo para enviarte novedades si lo autorizas</div>
+      <div class="gate-note">
+        Tu email se usa únicamente para registrar la descarga y enviarte actualizaciones si lo autorizas. Sin spam.
+        <a onclick="openPrivacy(event)">Política de privacidad</a>
+      </div>
     </div>
 
     <!-- Estado éxito -->
     <div class="dl-success" id="dl-success">
-      <div class="dl-success-msg">¡Listo! Tu descarga comienza en un momento.</div>
+      <div class="dl-success-msg">Descarga iniciada. Si no comienza automáticamente, usa el enlace:</div>
       <a class="dl-link" id="dl-link" href="#" download>
         ↓ Descargar Arbolado Urbano
       </a>
     </div>
   </div>
 
+  <!-- CÓMO FUNCIONA -->
+  <section class="how-it-works">
+    <h2 class="section-title">Cómo funciona</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-title">Configura tu municipio</div>
+        <div class="step-desc">Selecciona la estación AEMET más cercana. La aplicación carga automáticamente los datos climáticos reales de tu zona.</div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-title">Define los criterios técnicos</div>
+        <div class="step-desc">Espacio disponible, tipo de suelo, limitaciones de infraestructura y necesidades de riego. El asistente guía cada paso.</div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-title">Exporta el informe técnico</div>
+        <div class="step-desc">Selección de especies documentada, exportable en PDF y lista para adjuntar a tu proyecto o expediente municipal.</div>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">🌤</div>
-      <div class="feature-title">Datos climáticos reales (AEMET)</div>
-      <div class="feature-desc">Conecta con la red de estaciones meteorológicas de España para analizar el clima real de cada municipio.</div>
+  <section class="features-section">
+    <h2 class="section-title">Qué incluye</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon-svg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/>
+            <line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </div>
+        <div class="feature-title">Datos AEMET oficiales integrados</div>
+        <div class="feature-desc">Clima real de cada municipio desde la red de estaciones meteorológicas de España. Sin consultas manuales ni estimaciones.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon-svg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="2" width="8" height="4" rx="1"/>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="feature-title">Selección técnica documentada</div>
+        <div class="feature-desc">Criterios de espacio, suelo, riego y limitaciones registrados en cada consulta. Trazabilidad completa de la decisión técnica.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon-svg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <div class="feature-title">Informe PDF para expediente</div>
+        <div class="feature-desc">Exporta un informe técnico listo para adjuntar a proyectos de obra, memorias técnicas o expedientes de contratación.</div>
+      </div>
     </div>
-    <div class="feature">
-      <div class="feature-icon">📋</div>
-      <div class="feature-title">Asistente técnico paso a paso</div>
-      <div class="feature-desc">Guía al técnico por espacio disponible, suelo, limitaciones y riego para recomendar la especie óptima.</div>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section class="for-who">
+    <h2 class="section-title">¿Para quién es?</h2>
+    <div class="audience-list">
+      <div class="audience-item">
+        <div class="audience-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div>
+          <div class="audience-title">Servicios municipales de parques y jardines</div>
+          <div class="audience-desc">Técnicos que necesitan documentar sus decisiones de arbolado, justificar la selección de especies y cumplir con criterios técnicos establecidos en ordenanzas municipales.</div>
+        </div>
+      </div>
+      <div class="audience-item">
+        <div class="audience-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div>
+          <div class="audience-title">Técnicos de urbanismo y medio ambiente</div>
+          <div class="audience-desc">Profesionales que incorporan arbolado en planes de movilidad, proyectos de urbanización o planes municipales de arbolado con requisitos técnicos y climáticos específicos.</div>
+        </div>
+      </div>
+      <div class="audience-item">
+        <div class="audience-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div>
+          <div class="audience-title">Arquitectos paisajistas y consultoras</div>
+          <div class="audience-desc">Para proyectos que requieren justificación técnica de la selección de especies ante administraciones públicas o en pliegos de contratación.</div>
+        </div>
+      </div>
     </div>
-    <div class="feature">
-      <div class="feature-icon">📄</div>
-      <div class="feature-title">Exportación a PDF profesional</div>
-      <div class="feature-desc">Genera un informe listo para entregar al cliente o incorporar a proyectos de obra.</div>
+  </section>
+
+  <!-- REQUISITOS TÉCNICOS -->
+  <div class="requirements">
+    <div class="req-header">Requisitos técnicos</div>
+    <div class="req-grid">
+      <div class="req-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Windows 10 / Windows 11 (64 bits)
+      </div>
+      <div class="req-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        No requiere permisos de administrador
+      </div>
+      <div class="req-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Datos AEMET requieren conexión a internet
+      </div>
+      <div class="req-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Sin cuenta ni suscripción · Versión base gratuita
+      </div>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer>
-    <span>© 2026 Arbolado Urbano · Todos los derechos reservados</span>
-    <div class="ft-links">
-      <a href="#" onclick="openTerms(event)">Términos de uso</a>
-      <a href="mailto:daniel.ruiz.figueroa01@gmail.com">Soporte</a>
+    <div class="ft-top">
+      <span class="ft-creator">Desarrollado por Daniel Ruiz Figueroa</span>
+      <div class="ft-links">
+        <a href="#" onclick="openPrivacy(event)">Política de privacidad</a>
+        <a href="#" onclick="openTerms(event)">Términos de uso</a>
+        <a href="mailto:daniel.ruiz.figueroa01@gmail.com">Soporte</a>
+      </div>
     </div>
+    <div class="ft-bottom">© 2026 Arbolado Urbano · Todos los derechos reservados · daniel.ruiz.figueroa01@gmail.com</div>
   </footer>
 
 </div>
@@ -330,12 +609,45 @@
     <p>La versión base de Arbolado Urbano es gratuita. Determinadas funciones avanzadas requieren la adquisición de una licencia de pago. El uso de la versión gratuita no tiene límite de tiempo.</p>
 
     <h3>Datos personales</h3>
-    <p>El email introducido en el formulario de descarga se utiliza exclusivamente para gestionar el acceso a la descarga y, si el usuario lo autoriza, para comunicaciones relacionadas con actualizaciones de la aplicación. No se cede a terceros bajo ningún concepto.</p>
+    <p>El email introducido en el formulario de descarga se utiliza exclusivamente para registrar el acceso a la descarga y, si el usuario lo autoriza, para comunicaciones relacionadas con actualizaciones de la aplicación. No se cede a terceros bajo ningún concepto. Ver <a href="#" onclick="openPrivacyFromTerms(event)">Política de privacidad</a>.</p>
 
     <h3>Limitación de responsabilidad</h3>
     <p>Arbolado Urbano proporciona recomendaciones técnicas de apoyo a la toma de decisiones. La decisión final sobre la selección de especies es responsabilidad exclusiva del profesional que utiliza la herramienta.</p>
 
     <button class="modal-close" onclick="closeTerms()">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL POLÍTICA DE PRIVACIDAD -->
+<div class="modal-overlay" id="privacy-overlay" onclick="closePrivacyOnOverlay(event)">
+  <div class="modal">
+    <h2>Política de privacidad</h2>
+
+    <h3>Responsable del tratamiento</h3>
+    <p>Daniel Ruiz Figueroa · <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a></p>
+
+    <h3>Datos que recogemos</h3>
+    <p>Únicamente tu dirección de correo electrónico, introducida voluntariamente en el formulario de descarga.</p>
+
+    <h3>Finalidad del tratamiento</h3>
+    <p>Tu email se utiliza para: (1) registrar la descarga del software en nuestros sistemas y (2) enviarte comunicaciones sobre actualizaciones del software, únicamente si has dado tu consentimiento explícito.</p>
+
+    <h3>Base legal</h3>
+    <p>Tu consentimiento explícito al introducir tu email y pulsar el botón de descarga.</p>
+
+    <h3>Conservación de los datos</h3>
+    <p>Hasta que solicites la supresión de tus datos o transcurridos 3 años desde tu última descarga, lo que ocurra antes.</p>
+
+    <h3>Cesión a terceros</h3>
+    <p>No cedemos tus datos a terceros. Tu email queda almacenado en sistemas de gestión internos (Cloudflare). No se realiza ninguna transferencia internacional de datos.</p>
+
+    <h3>Tus derechos</h3>
+    <p>Tienes derecho a acceder, rectificar, suprimir, limitar el tratamiento, portar y oponerte al tratamiento de tus datos. Para ejercerlos, escríbenos a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>.</p>
+
+    <h3>Autoridad de control</h3>
+    <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
+
+    <button class="modal-close" onclick="closePrivacy()">Cerrar</button>
   </div>
 </div>
 
@@ -367,7 +679,7 @@
     // Loading
     btn.disabled = true;
     emailInput.disabled = true;
-    btnText.textContent = "Enviando...";
+    btnText.textContent = "Iniciando...";
     document.getElementById("gate-spinner").style.display = "block";
 
     try {
@@ -396,7 +708,7 @@
     } catch (err) {
       btn.disabled = false;
       emailInput.disabled = false;
-      btnText.textContent = "↓ Descargar";
+      btnText.textContent = "↓ Descargar gratis";
       document.getElementById("gate-spinner").style.display = "none";
       errorEl.textContent = err.message === "Failed to fetch"
         ? "Error de conexión. Comprueba tu red e inténtalo de nuevo."
@@ -421,6 +733,23 @@
   }
   function closeTermsOnOverlay(e) {
     if (e.target === document.getElementById("modal-overlay")) closeTerms();
+  }
+
+  // Modal privacidad
+  function openPrivacy(e) {
+    e.preventDefault();
+    document.getElementById("privacy-overlay").classList.add("open");
+  }
+  function closePrivacy() {
+    document.getElementById("privacy-overlay").classList.remove("open");
+  }
+  function closePrivacyOnOverlay(e) {
+    if (e.target === document.getElementById("privacy-overlay")) closePrivacy();
+  }
+  function openPrivacyFromTerms(e) {
+    e.preventDefault();
+    closeTerms();
+    setTimeout(() => openPrivacy(e), 150);
   }
 </script>
 
