@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de privacidad — Arbolado Urbano</title>
+  <meta name="description" content="Política de privacidad de Arbolado Urbano. Declaración de telemetría anónima (Sentry, Umami), datos que no recogemos y cómo oponerse." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest: #0e1f0e;
+      --moss:   #1a3320;
+      --fern:   #2d5a35;
+      --sage:   #4a7a50;
+      --mint:   #8fbc8f;
+      --cream:  #f2ede4;
+      --gold:   #c8a84b;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--forest);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 0%, rgba(45,90,53,0.4) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 80% at 85% 100%, rgba(26,51,32,0.55) 0%, transparent 70%);
+    }
+
+    .page {
+      position: relative; z-index: 1;
+      max-width: 780px; margin: 0 auto; padding: 0 24px 72px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 56px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--fern), var(--sage));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-icon svg { color: var(--cream); }
+    .nav-logo-text {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 17px; font-weight: 600; color: var(--cream); letter-spacing: 0.3px;
+    }
+    .nav-back {
+      font-size: 12px; color: rgba(143,188,143,0.8);
+      text-decoration: none;
+      background: rgba(106,176,76,0.08); border: 1px solid rgba(106,176,76,0.18);
+      border-radius: 99px; padding: 5px 14px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-back:hover { background: rgba(106,176,76,0.15); color: var(--mint); }
+
+    /* ── DOC ── */
+    .doc-header { margin-bottom: 36px; }
+    .doc-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(28px, 5vw, 40px); font-weight: 600; line-height: 1.15;
+      color: var(--cream); margin-bottom: 10px;
+    }
+    .doc-meta {
+      font-size: 12px; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .doc h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px; font-weight: 600;
+      color: var(--cream);
+      margin-top: 36px; margin-bottom: 14px;
+    }
+
+    .doc h3 {
+      font-size: 13px; font-weight: 600;
+      color: var(--mint);
+      margin-top: 18px; margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .doc p {
+      font-size: 14px; color: rgba(242,237,228,0.72);
+      line-height: 1.75; margin-bottom: 12px;
+    }
+
+    .doc ul {
+      margin: 6px 0 14px 22px;
+      color: rgba(242,237,228,0.72);
+    }
+    .doc li {
+      font-size: 14px; line-height: 1.7;
+      margin-bottom: 6px;
+    }
+
+    .doc a {
+      color: var(--mint); text-decoration: underline;
+      text-decoration-color: rgba(143,188,143,0.4);
+      transition: text-decoration-color 0.2s;
+    }
+    .doc a:hover { text-decoration-color: var(--mint); }
+
+    .doc strong {
+      color: var(--cream); font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 26px; margin-top: 64px;
+      display: flex; flex-direction: column; gap: 10px;
+      font-size: 12px; color: rgba(255,255,255,0.28);
+    }
+    .ft-top {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .ft-creator { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .ft-links { display: flex; flex-wrap: wrap; gap: 4px 0; }
+    .ft-links a {
+      color: rgba(255,255,255,0.38); text-decoration: none;
+      margin-left: 18px; transition: color 0.2s;
+    }
+    .ft-links a:hover { color: var(--mint); }
+    .ft-links .current {
+      color: var(--mint); cursor: default;
+    }
+    .ft-links .current:hover { color: var(--mint); }
+    .ft-bottom { font-size: 11px; color: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="/">
+      <div class="nav-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
+          <path d="M12 12C12 7 7 4 7 4s1 5 5 8"/><path d="M12 12C12 7 17 4 17 4s-1 5-5 8"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">Arbolado Urbano</span>
+    </a>
+    <a class="nav-back" href="/">← Volver a inicio</a>
+  </nav>
+
+  <!-- DOCUMENTO -->
+  <article class="doc">
+    <header class="doc-header">
+      <h1 class="doc-title">Política de privacidad</h1>
+      <div class="doc-meta">Última actualización: 29 de abril de 2026</div>
+    </header>
+
+    <h2>1. Responsable del tratamiento</h2>
+    <p>Daniel Ruiz Figueroa · <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a></p>
+
+    <h2>2. Qué datos recogemos y por qué</h2>
+    <p>Esta web y la aplicación de escritorio "Arbolado Urbano" recogen telemetría técnica anónima para detectar errores y entender qué funcionalidades se usan. No recogemos información personal identificable.</p>
+
+    <h3>Sentry — informes de errores</h3>
+    <p>Cuando la aplicación falla, se envía un informe técnico (mensaje de error, traza de pila, versión de la app, sistema operativo) a Sentry. No incluye nombre, email, ni el contenido de tu trabajo (especies seleccionadas, municipios, criterios técnicos).</p>
+    <ul>
+      <li>Proveedor: Functional Software, Inc. (Sentry).</li>
+      <li>Servidores: Unión Europea (<code>ingest.de.sentry.io</code>).</li>
+    </ul>
+
+    <h3>Umami — analítica de uso</h3>
+    <p>Registramos qué páginas o funciones se visitan, sin cookies, sin huella de navegador y sin IP almacenada. Umami es analítica respetuosa con la privacidad por diseño: no construye un perfil del usuario.</p>
+    <ul>
+      <li>Proveedor: Umami Software, Inc.</li>
+      <li>Servidores: <code>cloud.umami.is</code> (UE).</li>
+    </ul>
+
+    <h2>3. Qué NO recogemos</h2>
+    <ul>
+      <li>Tu nombre, email u otros datos personales.</li>
+      <li>El contenido de tus consultas técnicas (especies, municipios, criterios) — todo se procesa localmente en tu equipo.</li>
+      <li>Tu IP — Umami no la almacena; Sentry la recibe solo si la app genera un crash y queda anonimizada en su backend.</li>
+      <li>Cookies de publicidad o seguimiento entre sitios.</li>
+    </ul>
+
+    <h2>4. Base legal</h2>
+    <p>Interés legítimo (art. 6.1.f RGPD) para el mantenimiento técnico y la mejora del producto. La telemetría es anónima y mínima.</p>
+
+    <h2>5. Conservación</h2>
+    <ul>
+      <li><strong>Sentry:</strong> 90 días (retención por defecto del plan gratuito).</li>
+      <li><strong>Umami:</strong> agregados estadísticos sin identificadores personales, conservados de forma indefinida como histórico anónimo.</li>
+    </ul>
+
+    <h2>6. Cómo oponerse</h2>
+    <p>Al ser telemetría anónima sin perfilado, no hay forma de "darse de baja" individualmente porque no sabemos quién eres. Si quieres impedir el envío:</p>
+    <ul>
+      <li>Bloquea <code>*.ingest.de.sentry.io</code> y <code>cloud.umami.is</code> en tu firewall corporativo o en la configuración de red de tu equipo. La aplicación seguirá funcionando con normalidad sin telemetría.</li>
+      <li>En el futuro está previsto un toggle in-app <em>"No enviar telemetría"</em> — pendiente de implementación post-v1.0.</li>
+    </ul>
+
+    <h2>7. Tus derechos</h2>
+    <p>Acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>. Como la telemetría es anónima y no permite identificarte individualmente, en la práctica el ejercicio relevante es el bloqueo descrito en la sección 6.</p>
+
+    <h2>8. Autoridad de control</h2>
+    <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la Agencia Española de Protección de Datos: <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.</p>
+  </article>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-top">
+      <span class="ft-creator">Desarrollado por Daniel Ruiz Figueroa</span>
+      <div class="ft-links">
+        <a href="/privacidad" class="current">Política de privacidad</a>
+        <a href="/">Inicio</a>
+        <a href="mailto:daniel.ruiz.figueroa01@gmail.com">Soporte</a>
+      </div>
+    </div>
+    <div class="ft-bottom">© 2026 Arbolado Urbano · Todos los derechos reservados · daniel.ruiz.figueroa01@gmail.com</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
