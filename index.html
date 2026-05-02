@@ -87,78 +87,25 @@
       margin-bottom: 38px; max-width: 500px; margin-left: auto; margin-right: auto;
     }
 
-    /* ── EMAIL GATE ── */
-    .email-gate {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 16px; padding: 26px 30px;
-      max-width: 480px; margin: 0 auto;
-    }
-
-    .gate-label {
-      font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6);
-      margin-bottom: 14px; text-align: left;
-    }
-
-    .gate-row { display: flex; gap: 10px; }
-
-    .gate-input {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.11);
-      border-radius: 9px; padding: 12px 15px;
-      color: var(--cream); font-size: 14px; font-family: "DM Sans", sans-serif;
-      outline: none; transition: border-color 0.2s;
-    }
-    .gate-input:focus { border-color: rgba(106,176,76,0.5); }
-    .gate-input::placeholder { color: rgba(255,255,255,0.28); }
-    .gate-input:disabled { opacity: 0.5; }
-
-    .gate-btn {
-      background: linear-gradient(135deg, #3a7a2a, #5a9a3a);
-      border: none; border-radius: 9px; padding: 12px 20px;
-      color: #fff; font-size: 13px; font-weight: 600;
-      font-family: "DM Sans", sans-serif;
-      cursor: pointer; white-space: nowrap;
-      display: flex; align-items: center; gap: 7px;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .gate-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-    .gate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .gate-note {
-      font-size: 11px; color: rgba(255,255,255,0.3);
-      margin-top: 12px; text-align: center; line-height: 1.6;
-    }
-    .gate-note a {
-      color: rgba(143,188,143,0.7); text-decoration: underline;
-      cursor: pointer;
-    }
-    .gate-note a:hover { color: var(--mint); }
-
-    .gate-error {
-      font-size: 12px; color: #f08080;
-      margin-top: 10px; display: none;
-    }
-
-    /* ── ESTADO ÉXITO ── */
-    .dl-success {
-      display: none; text-align: center;
-      max-width: 480px; margin: 0 auto;
-    }
-    .dl-success-msg {
-      font-size: 15px; color: var(--mint);
-      margin-bottom: 18px; font-weight: 500;
-    }
-    .dl-link {
+    /* ── DOWNLOAD CTA ── */
+    .download-cta {
       display: inline-flex; align-items: center; gap: 10px;
       background: linear-gradient(135deg, #3a7a2a, #5a9a3a);
-      border-radius: 10px; padding: 14px 28px;
-      color: #fff; font-size: 15px; font-weight: 700;
+      border-radius: 10px; padding: 16px 32px;
+      color: #fff; font-size: 16px; font-weight: 700;
       font-family: "DM Sans", sans-serif;
       text-decoration: none; transition: opacity 0.2s, transform 0.15s;
     }
-    .dl-link:hover { opacity: 0.9; transform: translateY(-2px); }
+    .download-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    .download-meta {
+      margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.45);
+      text-align: center;
+    }
+    .download-meta a {
+      color: rgba(143,188,143,0.8); text-decoration: underline;
+    }
+    .download-meta a:hover { color: var(--mint); }
 
     /* ── SECCIÓN TÍTULOS ── */
     .section-title {
@@ -382,16 +329,6 @@
       cursor: pointer; transition: background 0.2s;
     }
     .modal-close:hover { background: rgba(255,255,255,0.12); }
-
-    /* ── SPINNER ── */
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner {
-      display: none; width: 13px; height: 13px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
   </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3f4007a9-289a-4c37-af50-b4796bb9a175"></script>
 </head>
@@ -419,30 +356,16 @@
     <h1 class="hero-title">Selección técnica de arbolado urbano<br/>para servicios municipales</h1>
     <p class="hero-sub">Toma decisiones de arbolado documentadas y exporta informes listos para expediente. Datos climáticos reales de AEMET integrados para cada municipio.</p>
 
-    <!-- Email gate -->
-    <div class="email-gate" id="gate-form">
-      <div class="gate-label">Tu email · La descarga comienza al instante</div>
-      <div class="gate-row">
-        <input class="gate-input" type="email" id="gate-email"
-          placeholder="tu@email.com" autocomplete="email" />
-        <button class="gate-btn" id="gate-btn" onclick="submitGate()">
-          <span class="spinner" id="gate-spinner"></span>
-          <span id="gate-btn-text">↓ Descargar gratis</span>
-        </button>
-      </div>
-      <div class="gate-error" id="gate-error"></div>
-      <div class="gate-note">
-        Tu email se usa únicamente para registrar la descarga y enviarte actualizaciones si lo autorizas. Sin spam.
-        <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>
-      </div>
-    </div>
-
-    <!-- Estado éxito -->
-    <div class="dl-success" id="dl-success">
-      <div class="dl-success-msg">Descarga iniciada. Si no comienza automáticamente, usa el enlace:</div>
-      <a class="dl-link" id="dl-link" href="#" download>
-        ↓ Descargar Arbolado Urbano
-      </a>
+    <!-- Descarga directa -->
+    <a class="download-cta" id="download-cta"
+       href="https://github.com/druiz07/arbolado-releases/releases/latest"
+       target="_blank" rel="noopener">
+      ↓ Descargar Arbolado Urbano
+    </a>
+    <div class="download-meta">
+      <span id="download-version">Última versión disponible</span> ·
+      Windows .exe · gratis · sin registro ·
+      <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>
     </div>
   </div>
 
@@ -577,7 +500,7 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
-        Sin cuenta ni suscripción · Versión base gratuita
+        Sin cuenta ni suscripción · Aplicación gratuita con todas las funciones
       </div>
     </div>
   </div>
@@ -605,10 +528,10 @@
     <p>Esta aplicación está destinada a uso profesional en el ámbito del arbolado urbano. Queda expresamente prohibida la redistribución del instalador o de cualquier parte del software a terceros.</p>
 
     <h3>Licencia</h3>
-    <p>La versión base de Arbolado Urbano es gratuita. Determinadas funciones avanzadas requieren la adquisición de una licencia de pago. El uso de la versión gratuita no tiene límite de tiempo.</p>
+    <p>Arbolado Urbano es una aplicación gratuita, con todas sus funciones incluidas y sin límite de tiempo. No requiere registro ni la introducción de datos personales para descargarla o usarla.</p>
 
     <h3>Datos personales</h3>
-    <p>El email introducido en el formulario de descarga se utiliza exclusivamente para registrar el acceso a la descarga y, si el usuario lo autoriza, para comunicaciones relacionadas con actualizaciones de la aplicación. No se cede a terceros bajo ningún concepto. Ver <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>.</p>
+    <p>La descarga es directa desde GitHub Releases y no implica registro. La aplicación recoge únicamente telemetría anónima (informes de error vía Sentry y métricas de uso vía Umami, ambos sin cookies ni huella personal). Ver <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>.</p>
 
     <h3>Limitación de responsabilidad</h3>
     <p>Arbolado Urbano proporciona recomendaciones técnicas de apoyo a la toma de decisiones. La decisión final sobre la selección de especies es responsabilidad exclusiva del profesional que utiliza la herramienta.</p>
@@ -618,76 +541,32 @@
 </div>
 
 <script>
-  const WORKER_URL = "https://arbolado-auth.arbolado-auth.workers.dev";
-
-  function isValidEmail(email) {
-    return typeof email === "string" &&
-      email.length > 0 &&
-      email.length < 200 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-  async function submitGate() {
-    const emailInput = document.getElementById("gate-email");
-    const btn        = document.getElementById("gate-btn");
-    const btnText    = document.getElementById("gate-btn-text");
-    const errorEl    = document.getElementById("gate-error");
-
-    errorEl.style.display = "none";
-
-    const email = emailInput.value.trim();
-    if (!isValidEmail(email)) {
-      errorEl.textContent = "Introduce un email válido.";
-      errorEl.style.display = "block";
-      return;
-    }
-
-    // Loading
-    btn.disabled = true;
-    emailInput.disabled = true;
-    btnText.textContent = "Iniciando...";
-    document.getElementById("gate-spinner").style.display = "block";
-
+  // Fetch dinámico del último .exe publicado en arbolado-releases.
+  // Si la API de GitHub falla o aplica rate-limit (60/h por IP en anónimo),
+  // el botón conserva su href fallback a la página /releases/latest y el
+  // usuario sigue pudiendo descargar con un click extra.
+  (async function loadLatestRelease() {
     try {
-      const res = await fetch(`${WORKER_URL}/register-download`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
+      const res = await fetch(
+        "https://api.github.com/repos/druiz07/arbolado-releases/releases/latest",
+        { headers: { "Accept": "application/vnd.github+json" } }
+      );
+      if (!res.ok) return;
       const data = await res.json();
-
-      if (!res.ok || !data.url) {
-        throw new Error(data.error || "Error al conectar");
+      const exe = (data.assets || []).find(a => /\.exe$/i.test(a.name));
+      if (exe && exe.browser_download_url) {
+        const cta = document.getElementById("download-cta");
+        cta.href = exe.browser_download_url;
+        cta.removeAttribute("target");
+        cta.removeAttribute("rel");
+        cta.setAttribute("download", "");
       }
-
-      // Éxito
-      document.getElementById("gate-form").style.display = "none";
-      const successEl = document.getElementById("dl-success");
-      const dlLink    = document.getElementById("dl-link");
-      dlLink.href = data.url;
-      successEl.style.display = "block";
-
-      // Iniciar descarga automáticamente
-      window.location.href = data.url;
-
-    } catch (err) {
-      btn.disabled = false;
-      emailInput.disabled = false;
-      btnText.textContent = "↓ Descargar gratis";
-      document.getElementById("gate-spinner").style.display = "none";
-      errorEl.textContent = err.message === "Failed to fetch"
-        ? "Error de conexión. Comprueba tu red e inténtalo de nuevo."
-        : (err.message || "Error al conectar. Inténtalo de nuevo.");
-      errorEl.style.display = "block";
-    }
-  }
-
-  // Enviar con Enter
-  document.getElementById("gate-email")
-    .addEventListener("keydown", function(e) {
-      if (e.key === "Enter") submitGate();
-    });
+      const versionEl = document.getElementById("download-version");
+      if (versionEl && data.tag_name) {
+        versionEl.textContent = "Versión " + data.tag_name.replace(/^v/, "");
+      }
+    } catch (e) { /* mantener fallback */ }
+  })();
 
   // Modal términos
   function openTerms(e) {
