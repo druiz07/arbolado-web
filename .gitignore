@@ -4,3 +4,10 @@ exe-url.json
 # Archivos de entorno locales
 *.env
 .env.local
+
+# Tooling local (no se sirve por GitHub Pages, no debe ir al repo público)
+.gitnexus
+.gitnexus/
+.claude/
+AGENTS.md
+CLAUDE.md
