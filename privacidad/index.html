@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Política de privacidad — Arbolado Urbano</title>
-  <meta name="description" content="Política de privacidad de Arbolado Urbano. Declaración de telemetría anónima (Sentry, Umami), datos que no recogemos y cómo oponerse." />
+  <meta name="description" content="Política de privacidad de Arbolado Urbano. Declaración de telemetría anónima (Sentry, Umami), servicios externos que consulta la aplicación, datos que no recogemos y cómo oponerse." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
@@ -190,7 +190,16 @@
       <li>Servidores: <code>cloud.umami.is</code> (UE).</li>
     </ul>
 
-    <h2>3. Qué NO recogemos</h2>
+    <h2>3. Servicios externos que consulta la aplicación</h2>
+    <p>Aparte de la telemetría, la aplicación se conecta a estos servicios para poder funcionar. No les envía datos personales, pero conviene saber qué recibe cada uno.</p>
+    <ul>
+      <li><strong>Servidor de licencias</strong> (<code>arbolado-license.arbolado-auth.workers.dev</code>, Cloudflare): recibe tu clave de licencia y un identificador técnico derivado de tu equipo, que sirve para que una misma clave no se use en varios ordenadores. Solo hace falta internet la primera vez, al activar; después la aplicación funciona sin conexión.</li>
+      <li><strong>AEMET</strong> (<code>opendata.aemet.es</code>): recibe el municipio o las coordenadas cuyo clima consultas. Es opcional — el mismo paso permite introducir los datos climáticos a mano.</li>
+      <li><strong>OpenStreetMap</strong> (<code>tile.openstreetmap.org</code>): dibuja el fondo del mapa de estaciones meteorológicas. Recibe la zona del mapa que estás viendo, es decir, aproximadamente el municipio consultado. Sin conexión el mapa se ve sin fondo y todo lo demás sigue funcionando. Cartografía © colaboradores de OpenStreetMap.</li>
+      <li><strong>Unsplash</strong> (<code>images.unsplash.com</code>): solo al exportar la ficha de una especie, para incluir su fotografía en el PDF. Sin conexión la ficha se genera igual, sin la foto.</li>
+    </ul>
+
+    <h2>4. Qué NO recogemos</h2>
     <ul>
       <li>Tu nombre, email u otros datos personales.</li>
       <li>El contenido de tus consultas técnicas (especies, municipios, criterios) — todo se procesa localmente en tu equipo.</li>
@@ -198,26 +207,27 @@
       <li>Cookies de publicidad o seguimiento entre sitios.</li>
     </ul>
 
-    <h2>4. Base legal</h2>
+    <h2>5. Base legal</h2>
     <p>Interés legítimo (art. 6.1.f RGPD) para el mantenimiento técnico y la mejora del producto. La telemetría es anónima y mínima.</p>
 
-    <h2>5. Conservación</h2>
+    <h2>6. Conservación</h2>
     <ul>
       <li><strong>Sentry:</strong> 90 días (retención por defecto del plan gratuito).</li>
       <li><strong>Umami:</strong> agregados estadísticos sin identificadores personales, conservados de forma indefinida como histórico anónimo.</li>
     </ul>
 
-    <h2>6. Cómo oponerse</h2>
+    <h2>7. Cómo oponerse</h2>
     <p>Al ser telemetría anónima sin perfilado, no hay forma de "darse de baja" individualmente porque no sabemos quién eres. Si quieres impedir el envío:</p>
     <ul>
       <li>Bloquea <code>*.ingest.de.sentry.io</code> y <code>cloud.umami.is</code> en tu firewall corporativo o en la configuración de red de tu equipo. La aplicación seguirá funcionando con normalidad sin telemetría.</li>
       <li>En el futuro está previsto un toggle in-app <em>"No enviar telemetría"</em> — pendiente de implementación post-v1.0.</li>
     </ul>
+    <p>Los servicios de la sección 3 admiten el mismo bloqueo, con una salvedad importante: <strong>el servidor de licencias tiene que ser accesible al menos una vez</strong>, en la activación inicial. AEMET, OpenStreetMap y Unsplash se pueden bloquear sin impedir el uso de la aplicación — se pierde el clima automático, el fondo del mapa y la foto de la ficha, respectivamente.</p>
 
-    <h2>7. Tus derechos</h2>
-    <p>Acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>. Como la telemetría es anónima y no permite identificarte individualmente, en la práctica el ejercicio relevante es el bloqueo descrito en la sección 6.</p>
+    <h2>8. Tus derechos</h2>
+    <p>Acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>. Como la telemetría es anónima y no permite identificarte individualmente, en la práctica el ejercicio relevante es el bloqueo descrito en la sección 7.</p>
 
-    <h2>8. Autoridad de control</h2>
+    <h2>9. Autoridad de control</h2>
     <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la Agencia Española de Protección de Datos: <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.</p>
   </article>
 
