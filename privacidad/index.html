@@ -167,7 +167,7 @@
   <article class="doc">
     <header class="doc-header">
       <h1 class="doc-title">Política de privacidad</h1>
-      <div class="doc-meta">Última actualización: 29 de abril de 2026</div>
+      <div class="doc-meta">Última actualización: 27 de septiembre de 2026</div>
     </header>
 
     <h2>1. Responsable del tratamiento</h2>
@@ -193,9 +193,11 @@
     <h2>3. Servicios externos que consulta la aplicación</h2>
     <p>Aparte de la telemetría, la aplicación se conecta a estos servicios para poder funcionar. No les envía datos personales, pero conviene saber qué recibe cada uno.</p>
     <ul>
-      <li><strong>Servidor de licencias</strong> (<code>arbolado-license.arbolado-auth.workers.dev</code>, Cloudflare): recibe tu clave de licencia y un identificador técnico derivado de tu equipo, que sirve para que una misma clave no se use en varios ordenadores. Solo hace falta internet la primera vez, al activar; después la aplicación funciona sin conexión.</li>
+      <li><strong>Servidor de licencias</strong> (<code>arbolado-license.arbolado-auth.workers.dev</code>, Cloudflare): recibe tu clave de licencia y un identificador técnico derivado de tu equipo, que sirve para que una misma clave no se use en varios ordenadores. Hace falta internet al activar; después la aplicación funciona sin conexión y solo necesita contactar con este servidor al menos una vez cada dos semanas, para comprobar que la clave sigue siendo válida.</li>
       <li><strong>AEMET</strong> (<code>opendata.aemet.es</code>): recibe el municipio o las coordenadas cuyo clima consultas. Es opcional — el mismo paso permite introducir los datos climáticos a mano.</li>
       <li><strong>OpenStreetMap</strong> (<code>tile.openstreetmap.org</code>): dibuja el fondo del mapa de estaciones meteorológicas. Recibe la zona del mapa que estás viendo, es decir, aproximadamente el municipio consultado. Sin conexión el mapa se ve sin fondo y todo lo demás sigue funcionando. Cartografía © colaboradores de OpenStreetMap.</li>
+      <li><strong>Buscador de OpenStreetMap</strong> (<code>nominatim.openstreetmap.org</code>): al buscar un municipio por su nombre, recibe el texto que escribes. Sin conexión, el municipio se puede escribir a mano.</li>
+      <li><strong>GitHub</strong> (<code>github.com</code> y sus servidores de descarga): al arrancar, comprueba si hay una versión nueva y, si la hay, la descarga. No recibe ningún dato de tu trabajo. Cada actualización va firmada y la aplicación rechaza cualquiera que no lleve esa firma.</li>
       <li><strong>Unsplash</strong> (<code>images.unsplash.com</code>): solo al exportar la ficha de una especie, para incluir su fotografía en el PDF. Sin conexión la ficha se genera igual, sin la foto.</li>
     </ul>
 
@@ -222,7 +224,7 @@
       <li>Bloquea <code>*.ingest.de.sentry.io</code> y <code>cloud.umami.is</code> en tu firewall corporativo o en la configuración de red de tu equipo. La aplicación seguirá funcionando con normalidad sin telemetría.</li>
       <li>En el futuro está previsto un toggle in-app <em>"No enviar telemetría"</em> — pendiente de implementación post-v1.0.</li>
     </ul>
-    <p>Los servicios de la sección 3 admiten el mismo bloqueo, con una salvedad importante: <strong>el servidor de licencias tiene que ser accesible al menos una vez</strong>, en la activación inicial. AEMET, OpenStreetMap y Unsplash se pueden bloquear sin impedir el uso de la aplicación — se pierde el clima automático, el fondo del mapa y la foto de la ficha, respectivamente.</p>
+    <p>Los servicios de la sección 3 admiten el mismo bloqueo, con una salvedad importante: <strong>el servidor de licencias tiene que ser accesible</strong> al activar y, después, al menos una vez cada dos semanas; si pasan más de 14 días sin poder contactarlo, la aplicación vuelve a pedir la clave. AEMET, OpenStreetMap (mapa y buscador), Unsplash y GitHub se pueden bloquear sin impedir el uso de la aplicación — se pierde el clima automático, el fondo del mapa, la búsqueda del municipio por su nombre, la foto de la ficha y las actualizaciones automáticas, respectivamente.</p>
 
     <h2>8. Tus derechos</h2>
     <p>Acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>. Como la telemetría es anónima y no permite identificarte individualmente, en la práctica el ejercicio relevante es el bloqueo descrito en la sección 7.</p>
