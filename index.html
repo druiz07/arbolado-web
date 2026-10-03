@@ -1,585 +1,708 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arbolado Urbano — Selección técnica de arbolado urbano para servicios municipales</title>
-  <meta name="description" content="Software de escritorio para técnicos municipales. Selección documentada de especies de arbolado urbano con datos AEMET reales, asistente técnico paso a paso y exportación a PDF lista para expediente." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Arbolado Urbano — Descarga e instalación · SDL</title>
+  <meta name="description" content="Descarga, instalación y activación de Arbolado Urbano, la aplicación de SDL para elegir arbolado urbano. Para Windows 10 y 11.">
+  <meta name="robots" content="noindex">
+
+  <!-- Vista previa del enlace en correo y WhatsApp (Open Graph). Rutas absolutas: las piden así. -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://druiz07.github.io/arbolado-web/">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Arbolado Urbano · SDL">
+  <meta property="og:title" content="Descarga Arbolado Urbano">
+  <meta property="og:description" content="Descarga, instalación y activación de Arbolado Urbano, la aplicación de SDL para elegir arbolado urbano. Para Windows 10 y 11.">
+  <meta property="og:image" content="https://druiz07.github.io/arbolado-web/img/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo de SDL y la ventana de Arbolado Urbano, con el texto «Descarga Arbolado Urbano. Para Windows 10 y 11».">
+
+  <!-- Favicon: el árbol de SDL. El PNG es el respaldo de los navegadores sin SVG. -->
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="img/arbol.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+  <!-- Tipografías servidas desde la propia web (fontsource, OFL 1.1). Nunca Google Fonts. -->
+  <link rel="preload" href="fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fuentes/fira-sans-condensed-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    @font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: normal; font-display: swap; src: url(fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: italic; font-display: swap; src: url(fuentes/source-serif-4-latin-400-italic.woff2) format("woff2"); }
+    @font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: normal; font-display: swap; src: url(fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Fira Sans Condensed"; font-weight: 500; font-style: normal; font-display: swap; src: url(fuentes/fira-sans-condensed-latin-500-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Fira Sans Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url(fuentes/fira-sans-condensed-latin-600-normal.woff2) format("woff2"); }
 
+    /* Respaldo de la serifa mientras llega: Georgia con las medidas de Source Serif 4, para que
+       el texto no cambie de líneas al llegar la fuente y no empuje la página (CLS en móvil con
+       red lenta). Valores sacados de las métricas de los dos ficheros (DESIGN.md, Tipografía). */
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 400; font-style: normal; src: local("Georgia"); size-adjust: 108.17%; ascent-override: 95.77%; descent-override: 30.97%; line-gap-override: 0%; }
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 400; font-style: italic; src: local("Georgia Italic"), local("Georgia-Italic"); size-adjust: 97.39%; ascent-override: 106.37%; descent-override: 34.4%; line-gap-override: 0%; }
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 600; font-style: normal; src: local("Georgia Bold"), local("Georgia-Bold"); size-adjust: 94.01%; ascent-override: 110.2%; descent-override: 35.63%; line-gap-override: 0%; }
+
+    /* Tokens: los de la cabecera de DESIGN.md. Ningún valor visual importante fuera de aquí. */
     :root {
-      --forest: #0e1f0e;
-      --moss:   #1a3320;
-      --fern:   #2d5a35;
-      --sage:   #4a7a50;
-      --mint:   #8fbc8f;
-      --cream:  #f2ede4;
-      --gold:   #c8a84b;
+      color-scheme: light;
+
+      --c-fondo: #ffffff;
+      --c-texto: #1e2a25;
+      --c-gris: #56625c;
+      --c-verde: #396653;
+      --c-verde-hondo: #2b4f41;
+      --c-verde-activo: #24443a;
+      --c-sobre-verde: #ffffff;
+      --c-marron: #704429;
+      --c-tinte: #edf2ef;
+      --c-linea: #c9d3ce;
+      --c-linea-suave: #dde3e0;
+
+      --f-serifa: "Source Serif 4", "Source Serif 4 respaldo", Georgia, "Times New Roman", serif;
+      --f-condensada: "Fira Sans Condensed", "Arial Narrow", Arial, sans-serif;
+      --f-codigo: Consolas, "Cascadia Mono", "Courier New", monospace;
+
+      --t-pequeno: 15px;
+      --t-cuerpo: 17px;
+      --t-entradilla: 20px;
+      --t-h3: 20px;
+      --t-control: 20px;
+      --t-h2: 32px;
+      --t-h1: 44px;
+
+      --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px;
+      --e-6: 32px; --e-7: 40px; --e-8: 48px; --e-9: 64px; --e-10: 96px;
+
+      --radio: 2px;
+      --contenedor: 960px;
+      --lectura: 680px;
+      --margen-lateral: 24px;
+      --cabecera: 64px;
+      --logo-alto: 40px;
+      --col-numero: 56px;
+      --boton-alto: 52px;
+      --entre-secciones: var(--e-10);
+      --rapido: 150ms;
     }
 
-    html, body { height: 100%; }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
-      font-family: "DM Sans", sans-serif;
-      background: var(--forest);
-      color: var(--cream);
-      min-height: 100vh;
-      overflow-x: hidden;
+      margin: 0;
+      background: var(--c-fondo);
+      color: var(--c-texto);
+      font-family: var(--f-serifa);
+      font-size: var(--t-cuerpo);
+      line-height: 1.6;
     }
+    img, svg { display: block; }
+    /* Sin palabras sueltas en la última línea de un párrafo */
+    p { text-wrap: pretty; }
 
-    body::before {
-      content: "";
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 15% 0%, rgba(45,90,53,0.4) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 80% at 85% 100%, rgba(26,51,32,0.55) 0%, transparent 70%);
-    }
+    a { color: var(--c-verde); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    a:hover { color: var(--c-verde-hondo); text-decoration-thickness: 2px; }
+    :focus-visible { outline: 3px solid var(--c-texto); outline-offset: 3px; }
 
-    .page {
-      position: relative; z-index: 1;
-      max-width: 780px; margin: 0 auto; padding: 0 24px 72px;
-    }
+    /* Al saltar a un ancla, el destino no queda pegado al borde de la ventana */
+    [id] { scroll-margin-top: var(--e-5); }
 
-    /* ── NAV ── */
-    nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 72px;
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; }
-    .nav-logo-icon {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: linear-gradient(135deg, var(--fern), var(--sage));
-      display: flex; align-items: center; justify-content: center;
-    }
-    .nav-logo-icon svg { color: var(--cream); }
-    .nav-logo-text {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 17px; font-weight: 600; color: var(--cream); letter-spacing: 0.3px;
-    }
-    .nav-badge {
-      font-size: 11px; color: rgba(143,188,143,0.8);
-      background: rgba(106,176,76,0.1); border: 1px solid rgba(106,176,76,0.2);
-      border-radius: 99px; padding: 4px 12px;
-    }
+    .contenedor { max-width: var(--contenedor); margin: 0 auto; padding: 0 var(--margen-lateral); }
 
-    /* ── HERO ── */
-    .hero { text-align: center; margin-bottom: 64px; }
+    /* El filete doble del logo de SDL: el único adorno de la página */
+    .filete { height: 9px; border-top: 2px solid var(--c-verde); border-bottom: 2px solid var(--c-verde); }
 
-    .hero-eyebrow {
-      display: inline-block; font-size: 11px; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--mint); margin-bottom: 22px;
-      background: rgba(106,176,76,0.08); border: 1px solid rgba(106,176,76,0.18);
-      border-radius: 99px; padding: 5px 18px;
+    /* ── 1 · Cabecera ─────────────────────────────────────────── */
+    .cabecera .contenedor { height: var(--cabecera); display: flex; align-items: center; gap: var(--e-4); }
+    .cabecera .logo { height: var(--logo-alto); width: auto; }
+    .cabecera .producto {
+      font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-control); line-height: 1;
+      padding-left: var(--e-4); border-left: 1px solid var(--c-linea);
     }
+    .cabecera .ayuda { margin-left: auto; font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); }
 
-    .hero-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(28px, 5vw, 44px); font-weight: 600; line-height: 1.15;
-      color: var(--cream); margin-bottom: 18px;
-    }
+    /* ── 2 · Descarga (primer pantallazo) ─────────────────────── */
+    .descarga { padding-top: var(--e-9); }
+    h1 { font-weight: 600; font-size: var(--t-h1); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 var(--e-4); text-wrap: balance; }
+    .entradilla { font-size: var(--t-entradilla); line-height: 1.5; color: var(--c-gris); max-width: var(--lectura); margin: 0 0 var(--e-7); }
 
-    .hero-sub {
-      font-size: 15px; color: rgba(242,237,228,0.58); line-height: 1.7;
-      margin-bottom: 38px; max-width: 500px; margin-left: auto; margin-right: auto;
-    }
+    .fila-descarga { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--e-7); margin-bottom: var(--e-8); }
 
-    /* ── DOWNLOAD CTA ── */
-    .download-cta {
+    .boton {
       display: inline-flex; align-items: center; gap: 10px;
-      background: linear-gradient(135deg, #3a7a2a, #5a9a3a);
-      border-radius: 10px; padding: 16px 32px;
-      color: #fff; font-size: 16px; font-weight: 700;
-      font-family: "DM Sans", sans-serif;
-      text-decoration: none; transition: opacity 0.2s, transform 0.15s;
+      min-height: var(--boton-alto); padding: var(--e-2) 28px; line-height: 1.2;
+      background: var(--c-verde); color: var(--c-sobre-verde); text-decoration: none;
+      font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-control);
+      border-radius: var(--radio);
     }
-    .download-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+    .boton:hover { background: var(--c-verde-hondo); color: var(--c-sobre-verde); }
+    .boton:active { background: var(--c-verde-activo); }
+    .boton svg { width: 20px; height: 20px; }
 
-    .download-meta {
-      margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.45);
-      text-align: center;
-    }
-    .download-meta a {
-      color: rgba(143,188,143,0.8); text-decoration: underline;
-    }
-    .download-meta a:hover { color: var(--mint); }
+    /* Versión, tamaño y sistema: lista de datos etiquetados, no una ristra con puntos.
+       La columna reserva el alto de las tres filas para que la página no salte al rellenarlas.
+       Base de 288 px: si no cabe a la derecha del botón (zoom fuerte), baja debajo en vez de aplastarse. */
+    .info-descarga { min-height: calc(3 * 1.5 * var(--t-cuerpo) + 4px); flex: 1 1 calc(3 * var(--e-10)); min-width: 0; }
+    .datos { display: grid; grid-template-columns: max-content 1fr; column-gap: var(--e-5); row-gap: 2px; margin: 0; line-height: 1.5; }
+    .datos dt { font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); color: var(--c-gris); padding-top: 2px; }
+    .datos dd { margin: 0; }
+    /* Si GitHub no responde: se explica junto al botón, en gris, sin rojo */
+    .nota-estado { margin: var(--e-2) 0 0; font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
 
-    /* ── SECCIÓN TÍTULOS ── */
-    .section-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(20px, 3vw, 26px); font-weight: 600;
-      color: var(--cream); text-align: center;
-      margin-bottom: 36px;
-    }
+    .solo-movil { display: none; }
 
-    /* ── CÓMO FUNCIONA ── */
-    .how-it-works { margin-bottom: 72px; }
+    .antes { background: var(--c-tinte); border-radius: var(--radio); padding: var(--e-5) var(--e-6); max-width: var(--lectura); }
+    .antes h2 { font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-control); line-height: 1.3; margin: 0 0 var(--e-3); }
+    .antes ol { list-style: none; margin: 0; padding: 0; }
+    .antes li { display: grid; grid-template-columns: var(--e-6) 1fr; }
+    .antes li + li { margin-top: var(--e-2); }
+    .num { font-family: var(--f-serifa); font-weight: 600; color: var(--c-marron); }
+    .antes .num { font-size: var(--t-h3); line-height: 1.35; }
 
-    .steps {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-    }
-    @media (max-width: 600px) {
-      .steps { grid-template-columns: 1fr; gap: 24px; }
-      .step-connector { display: none; }
-    }
+    /* ── Secciones: filete doble + h2 ──────────────────────────── */
+    .seccion { margin-top: var(--entre-secciones); }
+    .seccion > h2 { font-weight: 600; font-size: var(--t-h2); line-height: 1.2; margin: var(--e-7) 0 var(--e-6); }
 
-    .step {
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center; position: relative; padding: 0 16px;
-    }
+    /* Lo que se copia (nombre del fichero, huella, orden, destinos): monoespaciada */
+    code { font-family: var(--f-codigo); font-size: 0.88em; background: var(--c-tinte); padding: 1px var(--e-1); border-radius: var(--radio); overflow-wrap: anywhere; }
+    /* Un nombre de fichero baja entero de línea; solo se parte si no cabe en ninguna */
+    .paso code { display: inline-block; max-width: 100%; line-height: 1.4; }
 
-    .step:not(:last-child)::after {
-      content: "";
-      position: absolute; top: 20px; left: calc(50% + 28px);
-      width: calc(100% - 56px); height: 1px;
-      background: linear-gradient(90deg, rgba(106,176,76,0.4), rgba(106,176,76,0.1));
-    }
-    @media (max-width: 600px) {
-      .step:not(:last-child)::after { display: none; }
-    }
+    /* ── 3 · Instalación, paso a paso ─────────────────────────── */
+    .pasos { list-style: none; margin: 0; padding: 0; }
+    /* El número se alinea por la base con la primera línea del título */
+    .paso { display: grid; grid-template-columns: var(--col-numero) 1fr; align-items: first baseline; max-width: calc(var(--lectura) + var(--col-numero)); }
+    .paso + .paso { margin-top: var(--e-7); }
+    .paso > .num { font-size: var(--t-h2); line-height: 1.1; }
+    .paso h3 { font-weight: 600; font-size: var(--t-h3); line-height: 1.3; margin: 0 0 var(--e-1); }
+    .paso p { margin: 0 0 var(--e-3); }
+    .paso p:last-child { margin-bottom: 0; }
+    .aparte { font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
+    .sin-cortar { white-space: nowrap; }
+    /* En pantallas estrechas la clave de ejemplo puede partirse por los guiones: a 320 px no
+       siempre cabe entera (WCAG 1.4.10). La puntuación de detrás va pegada por su envoltorio */
+    @media (max-width: 22rem) { .sin-cortar.clave { white-space: normal; } }
 
-    .step-number {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(106,176,76,0.12);
-      border: 1px solid rgba(106,176,76,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700; color: var(--mint);
-      margin-bottom: 16px; flex-shrink: 0; position: relative; z-index: 1;
-    }
+    /* Captura dentro de un paso: mismo marco que la figura de la app, sin pasar de la medida de lectura */
+    .captura { margin: var(--e-4) 0 var(--e-3); max-width: var(--lectura); }
+    .captura:last-child { margin-bottom: 0; }
+    .captura .marco { border: 1px solid var(--c-linea); border-radius: var(--radio); overflow: hidden; }
+    .captura .marco img { width: 100%; height: auto; }
+    /* Capturas sin ampliar (pantallas de Windows a 1×): nunca estiradas, y apiladas.
+       Topadas a 400 px para que el azul no pese más que el botón (design-review, 3-oct) */
+    .captura .marco.natural { width: fit-content; max-width: min(100%, 400px); }
+    .captura .marco.natural img { width: auto; max-width: 100%; }
+    .captura .marco + .marco { margin-top: var(--e-3); }
+    .captura figcaption { margin-top: var(--e-2); font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
 
-    .step-title {
-      font-size: 13px; font-weight: 600;
-      color: #e8f5e9; margin-bottom: 8px; line-height: 1.35;
-    }
+    /* ── 4 · Sobre la clave ───────────────────────────────────── */
+    /* Tres cosas sin orden entre sí: sin números (solo las secuencias los llevan).
+       Separadas por línea fina, como las cláusulas de un documento. */
+    .puntos { list-style: none; margin: 0; padding: 0; max-width: var(--lectura); }
+    .puntos li { padding: var(--e-4) 0; border-top: 1px solid var(--c-linea-suave); text-wrap: pretty; }
+    .puntos li:first-child { padding-top: 0; border-top: 0; }
+    .puntos li:last-child { padding-bottom: 0; }
 
-    .step-desc {
-      font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.65;
-    }
+    /* ── 5 · Qué hace ─────────────────────────────────────────── */
+    .lectura { max-width: var(--lectura); }
+    .lectura p { margin: 0 0 var(--e-4); }
+    .lectura p:last-child { margin-bottom: 0; }
 
-    /* ── FEATURES ── */
-    .features-section { margin-bottom: 64px; }
+    /* Figura de la app: ventana de Windows plana, sin sombra (DESIGN.md, app-window) */
+    .figura { margin: var(--e-7) 0 0; }
+    .ventana { border: 1px solid var(--c-linea); border-radius: var(--radio); overflow: hidden; background: var(--c-tinte); }
+    .barra { height: var(--e-6); display: flex; align-items: center; gap: var(--e-2); padding-left: var(--e-3); font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); line-height: 1; }
+    .barra img { height: var(--e-4); width: auto; }
+    .barra .controles { margin-left: auto; display: flex; color: var(--c-gris); }
+    .barra .controles span { width: var(--e-7); text-align: center; }
+    .ventana img.app { width: 100%; height: auto; }
+    .figura figcaption { margin-top: var(--e-3); max-width: var(--lectura); font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
 
-    .features {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-    @media (max-width: 600px) {
-      .features { grid-template-columns: 1fr; }
-    }
+    /* Ficha de ejemplo: un caso real del motor de la app, entre dos líneas finas */
+    .ejemplo { margin-top: var(--e-8); max-width: var(--lectura); }
+    .ejemplo h3 { font-weight: 600; font-size: var(--t-h3); line-height: 1.3; margin: 0 0 var(--e-3); }
+    .ficha { margin: 0; padding: var(--e-4) 0; border-top: 1px solid var(--c-linea); border-bottom: 1px solid var(--c-linea); display: grid; grid-template-columns: max-content 1fr; column-gap: var(--e-5); row-gap: var(--e-2); line-height: 1.5; }
+    .ficha dt { font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); color: var(--c-gris); padding-top: 2px; }
+    .ficha dd { margin: 0; text-wrap: pretty; }
+    .ficha ul { list-style: none; margin: 0; padding: 0; }
+    /* Especie a la izquierda y su nota en columna propia, alineada (sin puntos medios) */
+    .ficha li { display: grid; grid-template-columns: 1fr max-content; column-gap: var(--e-4); }
+    .ficha li + li { margin-top: var(--e-2); }
+    .ficha .nota { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    /* El subconjunto latino de la serifa no trae «₂»: subíndice que no abre la línea */
+    sub { line-height: 0; }
+    .ejemplo .aparte { margin: var(--e-3) 0 0; }
 
-    .feature {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 13px; padding: 22px 20px;
+    /* ── 7 · Para el departamento de informática ──────────────── */
+    /* Desplegable con líneas arriba y abajo (DESIGN.md, disclosure). Sus propias líneas
+       hacen de filete: un filete doble encima las triplicaría. */
+    .desplegable { border-top: 1px solid var(--c-linea); border-bottom: 1px solid var(--c-linea); }
+    .desplegable summary {
+      min-height: calc(var(--e-8) + var(--e-2)); padding: var(--e-3) 0;
+      display: flex; align-items: center; gap: var(--e-3);
+      cursor: pointer; list-style: none;
     }
+    .desplegable summary::-webkit-details-marker { display: none; }
+    .desplegable summary h2 { font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-control); line-height: 1.3; margin: 0; }
+    .desplegable summary:hover h2 { color: var(--c-verde-hondo); }
+    .chevron { width: var(--e-5); height: var(--e-5); flex: none; color: var(--c-verde); transition: transform var(--rapido) ease-out; }
+    .desplegable[open] .chevron { transform: rotate(90deg); }
 
-    .feature-icon-svg {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(106,176,76,0.1);
-      border: 1px solid rgba(106,176,76,0.18);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 14px; color: var(--mint);
+    .contenido { padding: var(--e-2) 0 var(--e-7); }
+    .contenido > p { max-width: var(--lectura); margin: 0 0 var(--e-4); }
+    .contenido h3 { font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-cuerpo); line-height: 1.3; margin: var(--e-7) 0 var(--e-3); }
+
+    /* Huella SHA-256 y su botón «Copiar» (DESIGN.md, button-copy) */
+    .huella { display: flex; align-items: center; flex-wrap: wrap; gap: var(--e-2) var(--e-3); margin: var(--e-2) 0; }
+    .huella code { line-height: 1.4; }
+    .copiar {
+      height: calc(var(--e-6) + var(--e-1)); min-width: calc(var(--e-9) + var(--e-5)); padding: 0 var(--e-4);
+      background: var(--c-fondo); color: var(--c-verde); border: 1px solid var(--c-verde); border-radius: var(--radio);
+      font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); cursor: pointer;
+      transition: background-color var(--rapido) ease-out;
     }
+    .copiar:hover { color: var(--c-verde-hondo); border-color: var(--c-verde-hondo); }
+    .copiar.copiado { background: var(--c-tinte); }
+    .aviso-copiar { font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
 
-    .feature-title {
-      font-size: 13px; font-weight: 600;
-      color: #e8f5e9; margin-bottom: 7px; line-height: 1.35;
-    }
-    .feature-desc {
-      font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.6;
-    }
+    /* Destinos de red: la tabla se desplaza dentro de su caja, nunca la página */
+    .tabla { overflow-x: auto; }
+    .tabla table { width: 100%; min-width: var(--lectura); border-collapse: collapse; font-size: var(--t-pequeno); line-height: 1.5; }
+    .tabla th { font-family: var(--f-condensada); font-weight: 600; text-align: left; vertical-align: bottom; padding: 0 var(--e-4) var(--e-2) 0; border-bottom: 2px solid var(--c-verde); }
+    .tabla td { vertical-align: top; padding: var(--e-3) var(--e-4) var(--e-3) 0; border-bottom: 1px solid var(--c-linea-suave); text-wrap: pretty; }
+    .tabla th:last-child, .tabla td:last-child { padding-right: 0; }
+    /* Un dominio no se parte: la tabla se desplaza en su caja si no cabe */
+    .tabla code { white-space: nowrap; overflow-wrap: normal; }
+    /* La orden y los nombres bajan enteros de línea; solo se parten si no caben en ninguna */
+    .contenido .puntos code { display: inline-block; max-width: 100%; line-height: 1.4; }
+    /* Código pegado a su paréntesis o su punto: fluye en línea con ellos y solo se parte si no cabe */
+    .contenido .puntos .sin-cortar code, .paso .sin-cortar code { display: inline; max-width: none; white-space: normal; }
 
-    /* ── PARA QUIÉN ── */
-    .for-who { margin-bottom: 64px; }
+    /* ── 8 · Pie ──────────────────────────────────────────────── */
+    /* Texto pequeño gris; el filete doble a todo el ancho cierra la página como la abre la cabecera */
+    .pie { margin-top: var(--entre-secciones); font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
+    .pie .contenedor { padding-top: var(--e-6); padding-bottom: var(--e-9); }
+    /* Enlaces y datos separados por espacio, no por puntos medios */
+    .pie ul { list-style: none; margin: 0 0 var(--e-3); padding: 0; display: flex; flex-wrap: wrap; gap: var(--e-2) var(--e-5); }
+    .pie p { margin: 0; }
+    /* ⟦PENDIENTE⟧ dato que falta de SDL, a la vista para que se entienda la pregunta; desaparece antes del paso 13 */
+    .hueco { background: var(--c-tinte); padding: 0 var(--e-1); border-radius: var(--radio); font-family: var(--f-condensada); font-weight: 500; }
 
-    .audience-list {
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    /* Solo para lectores de pantalla (el aviso de «Copiado») */
+    .oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-    .audience-item {
-      display: flex; align-items: flex-start; gap: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px; padding: 18px 20px;
-    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 
-    .audience-icon {
-      width: 32px; height: 32px; flex-shrink: 0;
-      border-radius: 8px;
-      background: rgba(106,176,76,0.1);
-      border: 1px solid rgba(106,176,76,0.18);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--mint); margin-top: 1px;
-    }
-
-    .audience-title {
-      font-size: 13px; font-weight: 600;
-      color: #e8f5e9; margin-bottom: 4px;
-    }
-
-    .audience-desc {
-      font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.6;
-    }
-
-    /* ── REQUISITOS ── */
-    .requirements {
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 13px; padding: 24px 28px;
-      margin-bottom: 56px;
-    }
-
-    .req-header {
-      font-size: 12px; font-weight: 600;
-      color: rgba(143,188,143,0.7);
-      letter-spacing: 2px; text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-
-    .req-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 10px 32px;
-    }
-    @media (max-width: 500px) {
-      .req-grid { grid-template-columns: 1fr; }
-    }
-
-    .req-item {
-      display: flex; align-items: flex-start; gap: 9px;
-      font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5;
-    }
-
-    .req-item svg { flex-shrink: 0; color: var(--mint); margin-top: 2px; }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding-top: 26px; margin-top: 0;
-      display: flex; flex-direction: column; gap: 10px;
-      font-size: 12px; color: rgba(255,255,255,0.28);
-    }
-
-    .ft-top {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
-    }
-
-    .ft-creator {
-      font-size: 12px; color: rgba(255,255,255,0.35);
-    }
-
-    .ft-links { display: flex; flex-wrap: wrap; gap: 4px 0; }
-    .ft-links a {
-      color: rgba(255,255,255,0.38); text-decoration: none;
-      margin-left: 18px; transition: color 0.2s;
-    }
-    .ft-links a:hover { color: var(--mint); }
-
-    .ft-bottom {
-      font-size: 11px; color: rgba(255,255,255,0.2);
+    @media (max-width: 640px) {
+      :root {
+        --t-h1: 34px; --t-h2: 27px; --t-entradilla: 18px;
+        --margen-lateral: 20px; --cabecera: 56px; --logo-alto: 32px;
+        --col-numero: 44px; --entre-secciones: var(--e-9);
+      }
+      .cabecera .producto { font-size: var(--t-cuerpo); padding-left: var(--e-3); }
+      .cabecera .contenedor { gap: var(--e-3); }
+      .cabecera .ayuda { display: none; }
+      .descarga { padding-top: var(--e-7); }
+      .entradilla { margin-bottom: var(--e-6); }
+      .fila-descarga { gap: var(--e-5); margin-bottom: var(--e-6); }
+      .antes { padding: var(--e-5) var(--e-5); }
+      /* Ficha en móvil: la etiqueta encima de su dato, para que la especie tenga todo el ancho */
+      .ficha { grid-template-columns: 1fr; row-gap: 0; }
+      .ficha dt { padding-top: 0; }
+      .ficha dd { margin-bottom: var(--e-3); }
+      .ficha dd:last-child { margin-bottom: 0; }
+      /* Tabla de destinos: con las proporciones de escritorio, filas más bajas; se desplaza en su caja */
+      .tabla table { min-width: calc(var(--contenedor) - 2 * var(--margen-lateral)); }
+      /* La captura de un paso aprovecha también la columna del número, para que su texto se lea */
+      .paso .captura { margin-left: calc(-1 * var(--col-numero)); }
     }
 
-    /* ── MODAL BASE ── */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-      align-items: center; justify-content: center; padding: 24px;
+    /* Pantalla táctil sin ratón (móvil o tableta): el .exe no se puede instalar aquí.
+       Por tipo de pantalla, no por ancho: con zoom al 200 % un escritorio mide 640 px
+       y no debe perder el botón (DESIGN.md, Layout; WCAG 1.4.4 y 1.4.10). */
+    @media (hover: none) and (pointer: coarse) {
+      .fila-descarga .boton, .nota-estado { display: none; }
+      /* Sin tinte: el tinte es solo de «Antes de empezar»; el aviso va entre dos líneas finas */
+      .solo-movil { display: block; flex-basis: 100%; margin: 0; max-width: var(--lectura); padding: var(--e-4) 0; border-top: 1px solid var(--c-linea); border-bottom: 1px solid var(--c-linea); }
+      .solo-movil p { margin: 0; }
+      .solo-movil .aparte { margin-top: var(--e-2); }
+      .info-descarga { min-height: 0; }
     }
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--moss);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px; padding: 32px 36px;
-      max-width: 520px; width: 100%;
-      max-height: 80vh; overflow-y: auto;
-    }
-
-    .modal h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 22px; font-weight: 600;
-      color: var(--cream); margin-bottom: 24px;
-    }
-
-    .modal h3 {
-      font-size: 13px; font-weight: 600;
-      color: var(--mint); margin-bottom: 7px; margin-top: 18px;
-    }
-
-    .modal p {
-      font-size: 13px; color: rgba(242,237,228,0.65);
-      line-height: 1.7;
-    }
-
-    .modal a {
-      color: var(--mint);
-    }
-
-    .modal-close {
-      display: block; width: 100%; margin-top: 28px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 9px; padding: 11px;
-      color: rgba(255,255,255,0.6); font-size: 13px;
-      font-family: "DM Sans", sans-serif;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .modal-close:hover { background: rgba(255,255,255,0.12); }
   </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="3f4007a9-289a-4c37-af50-b4796bb9a175"></script>
 </head>
 <body>
 
-<div class="page">
-
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      <div class="nav-logo-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
-          <path d="M12 12C12 7 7 4 7 4s1 5 5 8"/><path d="M12 12C12 7 17 4 17 4s-1 5-5 8"/>
-        </svg>
-      </div>
-      <span class="nav-logo-text">Arbolado Urbano</span>
-    </div>
-    <span class="nav-badge">v1.0.4 · Windows</span>
-  </nav>
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-eyebrow">Software profesional · Descarga gratuita</div>
-    <h1 class="hero-title">Selección técnica de arbolado urbano<br/>para servicios municipales</h1>
-    <p class="hero-sub">Toma decisiones de arbolado documentadas y exporta informes listos para expediente. Datos climáticos reales de AEMET integrados para cada municipio.</p>
-
-    <!-- Descarga directa -->
-    <a class="download-cta" id="download-cta"
-       href="https://github.com/druiz07/arbolado-releases/releases/latest"
-       target="_blank" rel="noopener">
-      ↓ Descargar Arbolado Urbano
-    </a>
-    <div class="download-meta">
-      <span id="download-version">Última versión disponible</span> ·
-      Windows .exe · gratis · sin registro ·
-      <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>
-    </div>
+<header class="cabecera">
+  <div class="contenedor">
+    <img class="logo" src="img/logo-sdl.svg" width="95" height="40" alt="SDL · Investigación y divulgación del medio ambiente">
+    <span class="producto">Arbolado Urbano</span>
+    <!-- ⟦SDL: contacto⟧ — de momento apunta al pie, donde irá el contacto -->
+    <a class="ayuda" href="#contacto">¿Problemas? Contacta con SDL</a>
   </div>
+  <div class="filete"></div>
+</header>
 
-  <!-- CÓMO FUNCIONA -->
-  <section class="how-it-works">
-    <h2 class="section-title">Cómo funciona</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <div class="step-title">Configura tu municipio</div>
-        <div class="step-desc">Selecciona la estación AEMET más cercana. La aplicación carga automáticamente los datos climáticos reales de tu zona.</div>
+<main class="contenedor">
+
+  <section class="descarga" aria-labelledby="titulo-descarga">
+    <h1 id="titulo-descarga">Descarga Arbolado Urbano</h1>
+    <p class="entradilla">La aplicación de SDL para elegir el arbolado adecuado a cada calle, con el clima real de tu municipio. Para técnicos municipales.</p>
+
+    <div class="fila-descarga">
+      <!-- Sin JavaScript o si falla la API de GitHub, el botón lleva a la página de publicaciones -->
+      <a class="boton" id="boton-descarga" href="https://github.com/druiz07/arbolado-releases/releases/latest">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 3v10m-4.5-4.5L10 13l4.5-4.5M4 17h12"/></svg>
+        Descargar para Windows
+      </a>
+      <div class="solo-movil">
+        <p>Desde este dispositivo no se puede instalar. Arbolado Urbano se instala en un ordenador con Windows: reenvíate este enlace por correo y ábrelo allí.</p>
+        <!-- Para un portátil táctil en modo tableta, que sí es Windows -->
+        <p class="aparte">¿Estás en un ordenador con Windows? <a id="descarga-alternativa" href="https://github.com/druiz07/arbolado-releases/releases/latest">Descárgala aquí</a>.</p>
       </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-title">Define los criterios técnicos</div>
-        <div class="step-desc">Espacio disponible, tipo de suelo, limitaciones de infraestructura y necesidades de riego. El asistente guía cada paso.</div>
+      <div class="info-descarga" aria-live="polite">
+        <dl class="datos">
+          <dt data-si-version>Versión</dt><dd data-si-version data-vivo="version"><span aria-hidden="true">…</span><span class="oculto">cargando</span></dd>
+          <dt data-si-version>Tamaño</dt><dd data-si-version data-vivo="tamano"><span aria-hidden="true">…</span><span class="oculto">cargando</span></dd>
+          <dt>Sistema</dt><dd>Windows 10 y 11 (64&nbsp;bits)</dd>
+        </dl>
+        <p class="nota-estado" id="nota-sin-version" hidden>No se ha podido leer la versión más reciente. El botón lleva a la página de descargas de GitHub: allí, pulsa el archivo que termina en .exe.</p>
       </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <div class="step-title">Exporta el informe técnico</div>
-        <div class="step-desc">Selección de especies documentada, exportable en PDF y lista para adjuntar a tu proyecto o expediente municipal.</div>
-      </div>
+    </div>
+
+    <div class="antes">
+      <h2>Antes de empezar necesitas</h2>
+      <ol>
+        <!-- ⟦SDL: cómo se pide la clave⟧ — se añade al primer requisito cuando responda Susana -->
+        <li><span class="num" aria-hidden="true">1</span><span><strong>Una clave de activación.</strong> Te la facilita SDL.</span></li>
+        <li><span class="num" aria-hidden="true">2</span><span><strong>Internet al activar</strong> (unos segundos, la primera vez que abres la aplicación) y, después, abrirla con internet una vez por semana: basta con abrirla, sin volver a escribir la clave.</span></li>
+        <li><span class="num" aria-hidden="true">3</span><span><strong>Para el clima automático, una clave gratuita de AEMET.</strong> La aplicación te lleva a pedirla (<a href="#clave-aemet">cómo se pide</a>); son unos minutos. Sin ella, el clima se puede escribir a mano.</span></li>
+      </ol>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="features-section">
-    <h2 class="section-title">Qué incluye</h2>
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon-svg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/>
-            <line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/>
-            <line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
+  <section class="seccion" id="instalacion" aria-labelledby="titulo-instalacion">
+    <div class="filete"></div>
+    <h2 id="titulo-instalacion">Instalación, paso a paso</h2>
+
+    <ol class="pasos">
+      <li class="paso">
+        <span class="num" aria-hidden="true">1</span>
+        <div>
+          <h3>Descarga el instalador.</h3>
+          <p>Pulsa <a href="#titulo-descarga">«Descargar para Windows»</a>. Se guarda en tu carpeta de Descargas como <span class="sin-cortar"><code translate="no" data-vivo="fichero">Arbolado-Urbano-Setup-(versión).exe</code>.</span></p>
+          <p class="aparte">Si el navegador avisa de que el archivo «no se descarga habitualmente»: en Edge, pulsa los tres puntos (···) junto al aviso y elige <strong>Conservar</strong>; en Chrome, pulsa <strong>Conservar</strong>.</p>
         </div>
-        <div class="feature-title">Datos AEMET oficiales integrados</div>
-        <div class="feature-desc">Clima real de cada municipio desde la red de estaciones meteorológicas de España. Sin consultas manuales ni estimaciones.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon-svg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="8" y="2" width="8" height="4" rx="1"/>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-            <path d="m9 14 2 2 4-4"/>
-          </svg>
+      </li>
+
+      <li class="paso">
+        <span class="num" aria-hidden="true">2</span>
+        <div>
+          <h3>Ábrelo. Windows mostrará un aviso azul.</h3>
+          <p>Aparece la ventana <strong>«Windows protegió su PC»</strong>. Pulsa <strong>Más información</strong> y después <strong>Ejecutar de todas formas</strong>.</p>
+          <p class="aparte">Es normal: sale porque el instalador no lleva un certificado de firma comercial, no porque tenga ningún problema. Si tu equipo no te deja continuar, pasa a tu departamento de informática <a href="#informatica">el apartado del final de esta página</a>.</p>
+          <figure class="captura">
+            <div class="marco natural"><img src="img/aviso-windows-1.png" width="526" height="490" loading="lazy" alt="Aviso azul de Windows «Windows protegió su PC», con el enlace «Más información» marcado"></div>
+            <div class="marco natural"><img src="img/aviso-windows-2.png" width="526" height="484" loading="lazy" alt="El mismo aviso después de pulsar «Más información»: aparece el botón «Ejecutar de todas formas», marcado"></div>
+          </figure>
+          <p class="aparte">Si en lugar de esa ventana sale «Advertencia de seguridad» con «Editor: Publicador desconocido» (pasa en equipos que tienen desactivado ese filtro de Windows), pulsa <strong>Ejecutar</strong>.</p>
         </div>
-        <div class="feature-title">Selección técnica documentada</div>
-        <div class="feature-desc">Criterios de espacio, suelo, riego y limitaciones registrados en cada consulta. Trazabilidad completa de la decisión técnica.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon-svg">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="12" y1="18" x2="12" y2="12"/>
-            <line x1="9" y1="15" x2="15" y2="15"/>
-          </svg>
+      </li>
+
+      <li class="paso">
+        <span class="num" aria-hidden="true">3</span>
+        <div>
+          <h3>Elige «Solo para mí».</h3>
+          <p>El instalador pregunta para quién instalar. Con <strong>Solo para mí</strong> no hace falta ser administrador del equipo. Pulsa <strong>Siguiente</strong>, deja la carpeta que propone y pulsa <strong>Instalar</strong>. Al acabar, pulsa <strong>Terminar</strong>; se crea un acceso directo en el escritorio.</p>
         </div>
-        <div class="feature-title">Informe PDF para expediente</div>
-        <div class="feature-desc">Exporta un informe técnico listo para adjuntar a proyectos de obra, memorias técnicas o expedientes de contratación.</div>
+      </li>
+
+      <li class="paso">
+        <span class="num" aria-hidden="true">4</span>
+        <div>
+          <h3>Activa la aplicación.</h3>
+          <p>Al abrirla por primera vez te pide la clave. Escríbela tal como te la dio SDL (tiene la forma <span class="sin-cortar"><span class="sin-cortar clave">ARB-XXXXX-XXXXX-XXXXX</span>),</span> comprueba que tienes internet y pulsa <strong>Activar</strong>. Listo.</p>
+          <p class="aparte" id="clave-aemet">Para el clima automático, la primera búsqueda te pide además una clave de AEMET. Pulsa <strong>Obtener API key gratuita en AEMET OpenData</strong>: se abre la web de AEMET, escribes tu correo y te llega la clave. Pégala en la aplicación y pulsa <strong>Verificar y guardar</strong>. Solo se pide una vez.</p>
+          <figure class="captura">
+            <div class="marco">
+              <picture>
+                <source srcset="img/app-clave-aemet.webp" type="image/webp">
+                <img src="img/app-clave-aemet.png" width="774" height="268" loading="lazy" alt="Cuadro de la aplicación «Configura el acceso a datos climáticos», con el botón para pedir la clave gratuita de AEMET y el campo donde se pega">
+              </picture>
+            </div>
+          </figure>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="seccion" id="clave" aria-labelledby="titulo-clave">
+    <div class="filete"></div>
+    <h2 id="titulo-clave">Sobre la clave</h2>
+
+    <ul class="puntos">
+      <li><strong>Es para un ordenador.</strong> La clave queda ligada al equipo donde la activas. Si cambias de ordenador, pide a SDL que libere tu clave y actívala en el nuevo: es la misma clave.</li>
+      <li><strong>Después funciona sin internet.</strong> No tendrás que volver a escribir la clave: basta con abrir la aplicación con internet <strong>una vez por semana</strong>, y ella sola comprueba la clave y recibe las actualizaciones.</li>
+      <li><strong>Si pasa más tiempo sin conexión</strong>, primero avisa («Reconecta a internet para revalidar tu licencia») y, pasados 14 días, vuelve a pedir la clave: escribe <strong>la misma</strong>, con internet, y sigue como estaba.</li>
+    </ul>
+  </section>
+
+  <section class="seccion" id="que-hace" aria-labelledby="titulo-que-hace">
+    <div class="filete"></div>
+    <h2 id="titulo-que-hace">Qué hace</h2>
+
+    <div class="lectura">
+      <p>Partiendo del <strong>clima real de tu municipio</strong> (datos de AEMET) y de las <strong>condiciones de la calle</strong> (ancho de acera, espacio para la copa, suelo), la aplicación propone las especies adecuadas y genera un <strong>informe en PDF</strong> listo para adjuntar al expediente.</p>
+      <p>Para cada especie puedes ver su ficha, compararla con otras y comprobar cómo se comportaría con el clima de las próximas décadas, cómo crecerá en 30 años y qué riesgos puede dar en esa calle.</p>
+      <p>Cada consulta queda guardada en el historial, para retomarla o volver a sacar el informe cuando lo necesites.</p>
+    </div>
+
+    <!-- Captura de la app instalada (1.0.23), paso 1 del asistente. Si se rehace, rehacer también img/og-image.png CON OTRO NOMBRE -->
+    <figure class="figura">
+      <div class="ventana">
+        <div class="barra" aria-hidden="true"><img src="img/arbol.svg" width="22" height="16" alt="">Arbolado Urbano<span class="controles"><span>&#8212;</span><span>&#9744;</span><span>&#10005;</span></span></div>
+        <picture>
+          <source srcset="img/app-inicio.webp" type="image/webp">
+          <img class="app" src="img/app-inicio.png" width="1000" height="640" loading="lazy" alt="Primer paso del asistente de Arbolado Urbano: localización y clima del municipio">
+        </picture>
       </div>
+      <figcaption>El asistente empieza por la localización: con el municipio, la aplicación consulta el clima real en las estaciones de AEMET más cercanas.</figcaption>
+    </figure>
+
+    <!-- ⟦REVISAR CON EL CATÁLOGO DE LAS 500⟧ Salida real del motor de la app (30-sep-2026) con el
+         catálogo provisional de 25 especies y el clima de AEMET de Madrid-Retiro (3195). Con el
+         catálogo definitivo, la misma calle dará otra lista: volver a pasarla por el motor y
+         cambiar especies y notas. Sin cifras de catálogo (TEXTOS §5). -->
+    <div class="ejemplo">
+      <h3>Ejemplo: una calle de Madrid</h3>
+      <dl class="ficha">
+        <dt>Calle</dt><dd>Acera de 4 a 6 m, marco de plantación de 6 a 8 m, a pleno sol, suelo arcilloso</dd>
+        <dt>Clima</dt><dd>Madrid, estación de El Retiro (AEMET): 15,4&nbsp;°C de media y 417&nbsp;mm de lluvia al año</dd>
+        <dt>Cabe</dt><dd>Copa media</dd>
+        <dt>Descarta</dt><dd>Las especies de otro tamaño de copa y las que no aguantan el clima mediterráneo</dd>
+        <dt>Propone</dt>
+        <dd>
+          <ul>
+            <li><span><em>Pyrus calleryana</em> ‘Chanticleer’ (peral&nbsp;de&nbsp;flor)</span> <span class="nota">88 / 100</span></li>
+            <li><span><em>Prunus cerasifera</em> ‘Nigra’ (ciruelo&nbsp;de&nbsp;jardín)</span> <span class="nota">86 / 100</span></li>
+            <li><span><em>Lagerstroemia indica</em> (árbol&nbsp;de&nbsp;Júpiter)</span> <span class="nota">84 / 100</span></li>
+          </ul>
+        </dd>
+      </dl>
+      <p class="aparte">La nota de 0 a 100 combina cuatro cosas: cómo aguantará el clima de las próximas décadas, el mantenimiento que pide, la sombra y el CO<sub>2</sub> que aporta y los problemas que puede dar.</p>
     </div>
   </section>
 
-  <!-- PARA QUIÉN -->
-  <section class="for-who">
-    <h2 class="section-title">¿Para quién es?</h2>
-    <div class="audience-list">
-      <div class="audience-item">
-        <div class="audience-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <div>
-          <div class="audience-title">Servicios municipales de parques y jardines</div>
-          <div class="audience-desc">Técnicos que necesitan documentar sus decisiones de arbolado, justificar la selección de especies y cumplir con criterios técnicos establecidos en ordenanzas municipales.</div>
-        </div>
-      </div>
-      <div class="audience-item">
-        <div class="audience-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <div>
-          <div class="audience-title">Técnicos de urbanismo y medio ambiente</div>
-          <div class="audience-desc">Profesionales que incorporan arbolado en planes de movilidad, proyectos de urbanización o planes municipales de arbolado con requisitos técnicos y climáticos específicos.</div>
-        </div>
-      </div>
-      <div class="audience-item">
-        <div class="audience-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </div>
-        <div>
-          <div class="audience-title">Arquitectos paisajistas y consultoras</div>
-          <div class="audience-desc">Para proyectos que requieren justificación técnica de la selección de especies ante administraciones públicas o en pliegos de contratación.</div>
-        </div>
-      </div>
-    </div>
+  <section class="seccion" id="confianza" aria-labelledby="titulo-confianza">
+    <div class="filete"></div>
+    <h2 id="titulo-confianza">Confianza</h2>
+
+    <!-- ⟦SDL: nombre completo y contacto⟧ — de momento «SDL» y el enlace al pie, donde irá el contacto.
+         ⟦SDL: Términos⟧ — el cuarto punto (enlace a los Términos de uso) se añade cuando Susana los apruebe
+         (borrador en TEXTOS §9); hasta entonces no se enlaza a nada. -->
+    <ul class="puntos">
+      <li><strong>Quién está detrás.</strong> Arbolado Urbano es una aplicación de SDL. Para soporte y claves, <a href="#contacto">contacta con SDL</a>.</li>
+      <li><strong>Tu trabajo se queda en tu equipo.</strong> Las recomendaciones, los informes y tu historial se calculan y guardan en tu ordenador. Para funcionar, la aplicación consulta servicios externos (el clima de AEMET, el mapa y el buscador de municipios de OpenStreetMap, las fotos de las fichas y la comprobación de la clave); aparte de eso, solo envía, de forma anónima, informes de error y estadísticas de uso. Lo cuenta con detalle la <a href="privacidad/">política de privacidad</a>.</li>
+      <li><strong>Se actualiza sola.</strong> Cuando hay versión nueva, la aplicación la descarga, comprueba que es auténtica y te avisa para instalarla.</li>
+    </ul>
   </section>
 
-  <!-- REQUISITOS TÉCNICOS -->
-  <div class="requirements">
-    <div class="req-header">Requisitos técnicos</div>
-    <div class="req-grid">
-      <div class="req-item">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        Windows 10 / Windows 11 (64 bits)
+  <section class="seccion" id="informatica" aria-labelledby="titulo-informatica">
+    <details class="desplegable">
+      <summary>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        <h2 id="titulo-informatica">Para el departamento de informática</h2>
+      </summary>
+
+      <div class="contenido">
+        <p>Instalador NSIS de 64 bits para Windows 10/11. En modo «Solo para mí» se instala en el perfil del usuario, sin permisos de administrador. Usa la configuración de proxy de Windows. Necesita salida a internet a los destinos de abajo.</p>
+
+        <h3>¿Por qué Windows avisa de «editor desconocido»?</h3>
+        <p>El instalador no lleva un certificado de firma de código comercial. Lo que sí tiene:</p>
+        <ul class="puntos">
+          <li><strong>Solo se descarga desde GitHub,</strong> de las publicaciones oficiales del proyecto.</li>
+          <li><strong>Las actualizaciones van firmadas</strong> con una clave propia (Ed25519): la aplicación rechaza cualquier actualización que no lleve esa firma, aunque llegue desde el sitio correcto.</li>
+          <!-- La huella se lee del campo «digest» de la API de GitHub y se pinta en MAYÚSCULAS, como la da
+               Get-FileHash (revisión de textos #9). Sin JavaScript o sin respuesta de GitHub, queda la
+               alternativa de las notas de la versión, donde el script de firma también la imprime. -->
+          <li id="punto-huella" hidden>
+            <strong>Huella SHA-256 de la versión <span data-vivo="version">…</span>:</strong>
+            <span class="huella">
+              <code translate="no" data-vivo="huella">…</code>
+              <button class="copiar" type="button" id="copiar-huella">Copiar</button>
+              <span class="aviso-copiar oculto" id="aviso-copiado" aria-live="polite"></span>
+            </span>
+            Para comprobarla, en PowerShell, en la carpeta de Descargas: <span class="sin-cortar"><code translate="no"><span class="sin-cortar">Get-FileHash</span> .\<span data-vivo="fichero">Arbolado-Urbano-Setup-(versión).exe</span></code>.</span> El resultado tiene que ser idéntico.
+          </li>
+          <li id="sin-huella"><strong>Huella SHA-256:</strong> figura en las notas de cada versión, en la misma página de GitHub a la que lleva el botón de descarga. Para comprobarla, en PowerShell, en la carpeta de Descargas: <code translate="no">Get-FileHash</code> seguido del nombre del instalador. El resultado tiene que ser el mismo; da igual que uno salga en mayúsculas y el otro en minúsculas.</li>
+        </ul>
+
+        <h3 id="titulo-destinos">Destinos de red</h3>
+        <div class="tabla" role="region" aria-labelledby="titulo-destinos" tabindex="0">
+          <table>
+            <thead>
+              <tr><th scope="col">Destino</th><th scope="col">Para qué</th><th scope="col">Cuándo</th><th scope="col">¿Se puede bloquear?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code translate="no">arbolado-license.arbolado-auth.workers.dev</code></td><td>Activar y revalidar la clave (envía la clave y un identificador técnico del equipo)</td><td>Al activar y, después, al abrirse, si la última comprobación tiene 7 días o más</td><td><strong>No.</strong> Sin él no se activa, y a los 14 días sin validar la aplicación se bloquea</td></tr>
+              <tr><td><code translate="no">github.com</code>, <code translate="no">release-assets.githubusercontent.com</code></td><td>Buscar y descargar actualizaciones</td><td>Al arrancar</td><td>Sí, pero deja de actualizarse</td></tr>
+              <tr><td><code translate="no">*.ingest.de.sentry.io</code></td><td>Informes de error anónimos (UE)</td><td>Al abrir la aplicación (aviso anónimo de sesión) y si hay un fallo</td><td>Sí</td></tr>
+              <tr><td><code translate="no">gateway.umami.is</code></td><td>Estadística de uso anónima, sin cookies (lista cerrada de eventos)</td><td>Al usar la aplicación (búsqueda, informe, función abierta)</td><td>Sí</td></tr>
+              <tr><td><code translate="no">opendata.aemet.es</code></td><td>Datos climáticos</td><td>Al consultar el clima</td><td>Sí: el clima se puede escribir a mano</td></tr>
+              <tr><td><code translate="no">nominatim.openstreetmap.org</code></td><td>Buscar el municipio por nombre</td><td>Al buscar un municipio</td><td>Sí: el municipio se puede escribir a mano</td></tr>
+              <tr><td><code translate="no">*.tile.openstreetmap.org</code></td><td>Fondo del mapa de estaciones</td><td>Al ver el mapa</td><td>Sí: el mapa sale sin fondo</td></tr>
+              <tr><td><code translate="no">images.unsplash.com</code></td><td>Foto de la especie en la ficha PDF</td><td>Al exportar una ficha</td><td>Sí: la ficha sale sin foto</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Requisitos</h3>
+        <ul class="puntos">
+          <li>Windows 10 u 11 de 64 bits.</li>
+          <li>Sin permisos de administrador (modo «Solo para mí»). «Para todos los usuarios» sí los pide.</li>
+          <li>Espacio en disco: unos <strong>420 MB</strong> (se instala en <span class="sin-cortar"><code translate="no">%LOCALAPPDATA%\Programs\Arbolado Urbano</code>).</span></li>
+          <li>Proxy: usa la configuración de proxy de Windows para todas sus conexiones.</li>
+          <li><strong>Clave de AEMET OpenData</strong> para el clima automático: personal y gratuita, la pide cada técnico con su correo desde la propia aplicación. Se guarda cifrada en el equipo (con el cifrado de Windows) y solo se envía a <span class="sin-cortar"><code translate="no">opendata.aemet.es</code>.</span> Sin ella, el clima se escribe a mano.</li>
+        </ul>
       </div>
-      <div class="req-item">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        No requiere permisos de administrador
-      </div>
-      <div class="req-item">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        Datos AEMET requieren conexión a internet
-      </div>
-      <div class="req-item">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        Sin cuenta ni suscripción · Aplicación gratuita con todas las funciones
-      </div>
-    </div>
+    </details>
+  </section>
+
+</main>
+
+<footer class="pie" id="contacto">
+  <div class="filete"></div>
+  <div class="contenedor">
+    <!-- ⟦SDL: nombre completo y correo de contacto⟧ (pregunta 3 para Susana) — de momento «SDL» y el hueco visible.
+         ⟦SDL: Términos⟧ — el enlace se añade cuando Susana los apruebe (borrador en TEXTOS §9). -->
+    <ul>
+      <li>SDL</li>
+      <li><span class="hueco">Contacto de SDL: pendiente</span></li>
+      <li><a href="privacidad/">Privacidad</a></li>
+      <li>© 2026</li>
+    </ul>
+    <p>Desarrollado por Daniel Ruiz Figueroa en colaboración con SDL.</p>
   </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="ft-top">
-      <span class="ft-creator">Desarrollado por Daniel Ruiz Figueroa</span>
-      <div class="ft-links">
-        <a href="privacidad/">Política de privacidad</a>
-        <a href="#" onclick="openTerms(event)">Términos de uso</a>
-      </div>
-    </div>
-    <div class="ft-bottom">© 2026 Arbolado Urbano · Todos los derechos reservados · daniel.ruiz.figueroa01@gmail.com</div>
-  </footer>
-
-</div>
-
-<!-- MODAL TÉRMINOS -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeTermsOnOverlay(event)">
-  <div class="modal">
-    <h2>Términos de uso</h2>
-
-    <h3>Uso permitido</h3>
-    <p>Esta aplicación está destinada a uso profesional en el ámbito del arbolado urbano. Queda expresamente prohibida la redistribución del instalador o de cualquier parte del software a terceros.</p>
-
-    <h3>Licencia</h3>
-    <p>Arbolado Urbano es una aplicación gratuita, con todas sus funciones incluidas y sin límite de tiempo. No requiere registro ni la introducción de datos personales para descargarla o usarla.</p>
-
-    <h3>Datos personales</h3>
-    <p>La descarga es directa desde GitHub Releases y no implica registro. La aplicación recoge únicamente telemetría anónima (informes de error vía Sentry y métricas de uso vía Umami, ambos sin cookies ni huella personal). Ver <a href="privacidad/" target="_blank" rel="noopener">Política de privacidad</a>.</p>
-
-    <h3>Limitación de responsabilidad</h3>
-    <p>Arbolado Urbano proporciona recomendaciones técnicas de apoyo a la toma de decisiones. La decisión final sobre la selección de especies es responsabilidad exclusiva del profesional que utiliza la herramienta.</p>
-
-    <button class="modal-close" onclick="closeTerms()">Cerrar</button>
-  </div>
-</div>
+</footer>
 
 <script>
-  // Fetch dinámico del último .exe publicado en arbolado-releases.
-  // Si la API de GitHub falla o aplica rate-limit (60/h por IP en anónimo),
-  // el botón conserva su href fallback a la página /releases/latest y el
-  // usuario sigue pudiendo descargar con un click extra.
-  (async function loadLatestRelease() {
+  // Lee la última publicación de arbolado-releases y rellena lo «vivo»:
+  // enlace directo al .exe, versión y tamaño. Si la API de GitHub falla
+  // (o aplica su límite de 60 consultas/hora por IP), el botón conserva
+  // su enlace a la página de publicaciones y se explica al lado, en gris.
+  (async function cargarUltimaVersion() {
+    const vivos = (clave) => document.querySelectorAll('[data-vivo="' + clave + '"]');
+    const poner = (clave, texto) => vivos(clave).forEach((el) => { el.textContent = texto; });
+
+    function sinVersion() {
+      document.querySelectorAll("[data-si-version]").forEach((el) => { el.hidden = true; });
+      document.getElementById("nota-sin-version").hidden = false;
+    }
+
     try {
       const res = await fetch(
         "https://api.github.com/repos/druiz07/arbolado-releases/releases/latest",
         { headers: { "Accept": "application/vnd.github+json" } }
       );
-      if (!res.ok) return;
-      const data = await res.json();
-      const exe = (data.assets || []).find(a => /\.exe$/i.test(a.name));
-      if (exe && exe.browser_download_url) {
-        const cta = document.getElementById("download-cta");
-        cta.href = exe.browser_download_url;
-        cta.removeAttribute("target");
-        cta.removeAttribute("rel");
-        cta.setAttribute("download", "");
+      if (!res.ok) return sinVersion();
+      const datos = await res.json();
+      const exe = (datos.assets || []).find((a) => /\.exe$/i.test(a.name));
+      if (!exe || !exe.browser_download_url || !datos.tag_name) return sinVersion();
+
+      const boton = document.getElementById("boton-descarga");
+      boton.href = exe.browser_download_url;
+      boton.setAttribute("download", "");
+      const alternativa = document.getElementById("descarga-alternativa");
+      alternativa.href = exe.browser_download_url;
+      alternativa.setAttribute("download", "");
+
+      poner("version", datos.tag_name.replace(/^v/, ""));
+      // En MB como los muestra Windows (1 MB = 1024 × 1024 bytes)
+      poner("tamano", Math.round(exe.size / 1048576) + " MB");
+      poner("fichero", exe.name);
+      // En MAYÚSCULAS, como la da Get-FileHash: así «idéntico» es literal (GitHub la da en minúsculas)
+      if (exe.digest) {
+        poner("huella", exe.digest.replace(/^sha256:/, "").toUpperCase());
+        document.getElementById("punto-huella").hidden = false;
+        document.getElementById("sin-huella").remove();
       }
-      const versionEl = document.getElementById("download-version");
-      if (versionEl && data.tag_name) {
-        versionEl.textContent = "Versión " + data.tag_name.replace(/^v/, "");
-      }
-    } catch (e) { /* mantener fallback */ }
+    } catch (e) {
+      sinVersion();
+    }
   })();
 
-  // Modal términos
-  function openTerms(e) {
-    e.preventDefault();
-    document.getElementById("modal-overlay").classList.add("open");
-  }
-  function closeTerms() {
-    document.getElementById("modal-overlay").classList.remove("open");
-  }
-  function closeTermsOnOverlay(e) {
-    if (e.target === document.getElementById("modal-overlay")) closeTerms();
-  }
+  // Si se llega a #informatica (enlace del paso 2 o dirección con el ancla), el desplegable se abre solo
+  (function abrirDesplegable() {
+    const desplegable = document.querySelector("#informatica details");
+    const abrir = () => {
+      if (location.hash === "#informatica") desplegable.open = true;
+    };
+    abrir();
+    window.addEventListener("hashchange", abrir);
+    // Al pulsar un enlace con el ancla ya puesta no hay «hashchange»: se abre en el clic
+    document.querySelectorAll('a[href="#informatica"]').forEach((a) => {
+      a.addEventListener("click", () => { desplegable.open = true; });
+    });
+  })();
 
+  // La caja de la tabla solo entra en el orden del tabulador cuando de verdad se desplaza
+  (function tablaEnfocable() {
+    const caja = document.querySelector(".tabla");
+    const ajustar = () => {
+      if (caja.scrollWidth > caja.clientWidth) caja.setAttribute("tabindex", "0");
+      else caja.removeAttribute("tabindex");
+    };
+    ajustar();
+    window.addEventListener("resize", ajustar);
+    // Dentro del desplegable cerrado mide 0: se recalcula al abrirlo
+    document.querySelector("#informatica details").addEventListener("toggle", ajustar);
+  })();
+
+  // «Copiar» de la huella: pasa a «Copiado» con fondo tinte y lo anuncia a los lectores de pantalla.
+  // Si el navegador no deja escribir en el portapapeles, deja la huella seleccionada para Ctrl+C.
+  (function botonCopiar() {
+    const boton = document.getElementById("copiar-huella");
+    const aviso = document.getElementById("aviso-copiado");
+    const huella = document.querySelector('[data-vivo="huella"]');
+    let espera;
+
+    // Tras copiar, el botón vuelve a «Copiar» al rato
+    function restablecer() {
+      espera = setTimeout(() => {
+        boton.textContent = "Copiar";
+        boton.classList.remove("copiado");
+        aviso.textContent = "";
+        aviso.classList.add("oculto");
+      }, 2500);
+    }
+
+    boton.addEventListener("click", async () => {
+      // Se vacía antes de escribir, para que un segundo clic se vuelva a anunciar
+      clearTimeout(espera);
+      aviso.textContent = "";
+      try {
+        await navigator.clipboard.writeText(huella.textContent.trim());
+        boton.textContent = "Copiado";
+        boton.classList.add("copiado");
+        // Con éxito, el botón ya lo dice a la vista: el aviso solo lo oye el lector de pantalla
+        aviso.classList.add("oculto");
+        aviso.textContent = "Huella copiada";
+        restablecer();
+      } catch (e) {
+        const rango = document.createRange();
+        rango.selectNodeContents(huella);
+        const seleccion = window.getSelection();
+        seleccion.removeAllRanges();
+        seleccion.addRange(rango);
+        // Sin portapapeles, el aviso se ve y se queda: hay que terminar a mano
+        boton.textContent = "Copiar";
+        boton.classList.remove("copiado");
+        aviso.classList.remove("oculto");
+        aviso.textContent = "Huella seleccionada: pulsa Ctrl+C para copiarla";
+      }
+    });
+  })();
 </script>
 
 </body>

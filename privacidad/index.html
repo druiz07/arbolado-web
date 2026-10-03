@@ -1,211 +1,201 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
   <title>Política de privacidad — Arbolado Urbano</title>
-  <meta name="description" content="Política de privacidad de Arbolado Urbano. Declaración de telemetría anónima (Sentry, Umami), servicios externos que consulta la aplicación, datos que no recogemos y cómo oponerse." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <meta name="description" content="Política de privacidad de Arbolado Urbano. Declaración de telemetría anónima (Sentry, Umami), servicios externos que consulta la aplicación, datos que no recogemos y cómo oponerse.">
+  <meta name="robots" content="noindex">
+
+  <!-- Favicon: el árbol de SDL, igual que la página de descarga -->
+  <link rel="icon" href="../img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="../img/arbol.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+
+  <!-- Tipografías servidas desde la propia web (fontsource, OFL 1.1). Nunca Google Fonts. -->
+  <link rel="preload" href="../fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../fuentes/fira-sans-condensed-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    @font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: normal; font-display: swap; src: url(../fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Source Serif 4"; font-weight: 400; font-style: italic; font-display: swap; src: url(../fuentes/source-serif-4-latin-400-italic.woff2) format("woff2"); }
+    @font-face { font-family: "Source Serif 4"; font-weight: 600; font-style: normal; font-display: swap; src: url(../fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Fira Sans Condensed"; font-weight: 500; font-style: normal; font-display: swap; src: url(../fuentes/fira-sans-condensed-latin-500-normal.woff2) format("woff2"); }
+    @font-face { font-family: "Fira Sans Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url(../fuentes/fira-sans-condensed-latin-600-normal.woff2) format("woff2"); }
 
+    /* Respaldo de la serifa mientras llega: Georgia con las medidas de Source Serif 4, para que
+       el texto no cambie de líneas al llegar la fuente y no empuje la página (CLS en móvil con
+       red lenta). Valores sacados de las métricas de los dos ficheros (DESIGN.md, Tipografía). */
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 400; font-style: normal; src: local("Georgia"); size-adjust: 108.17%; ascent-override: 95.77%; descent-override: 30.97%; line-gap-override: 0%; }
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 400; font-style: italic; src: local("Georgia Italic"), local("Georgia-Italic"); size-adjust: 97.39%; ascent-override: 106.37%; descent-override: 34.4%; line-gap-override: 0%; }
+    @font-face { font-family: "Source Serif 4 respaldo"; font-weight: 600; font-style: normal; src: local("Georgia Bold"), local("Georgia-Bold"); size-adjust: 94.01%; ascent-override: 110.2%; descent-override: 35.63%; line-gap-override: 0%; }
+
+    /* Tokens: los de la cabecera de DESIGN.md. Ningún valor visual importante fuera de aquí. */
     :root {
-      --forest: #0e1f0e;
-      --moss:   #1a3320;
-      --fern:   #2d5a35;
-      --sage:   #4a7a50;
-      --mint:   #8fbc8f;
-      --cream:  #f2ede4;
-      --gold:   #c8a84b;
+      color-scheme: light;
+
+      --c-fondo: #ffffff;
+      --c-texto: #1e2a25;
+      --c-gris: #56625c;
+      --c-verde: #396653;
+      --c-verde-hondo: #2b4f41;
+      --c-verde-activo: #24443a;
+      --c-sobre-verde: #ffffff;
+      --c-marron: #704429;
+      --c-tinte: #edf2ef;
+      --c-linea: #c9d3ce;
+      --c-linea-suave: #dde3e0;
+
+      --f-serifa: "Source Serif 4", "Source Serif 4 respaldo", Georgia, "Times New Roman", serif;
+      --f-condensada: "Fira Sans Condensed", "Arial Narrow", Arial, sans-serif;
+      --f-codigo: Consolas, "Cascadia Mono", "Courier New", monospace;
+
+      --t-pequeno: 15px;
+      --t-cuerpo: 17px;
+      --t-entradilla: 20px;
+      --t-h3: 20px;
+      --t-control: 20px;
+      --t-h2: 32px;
+      --t-h1: 44px;
+
+      --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px;
+      --e-6: 32px; --e-7: 40px; --e-8: 48px; --e-9: 64px; --e-10: 96px;
+
+      --radio: 2px;
+      --contenedor: 960px;
+      --lectura: 680px;
+      --margen-lateral: 24px;
+      --cabecera: 64px;
+      --logo-alto: 40px;
+      --col-numero: 56px;
+      --boton-alto: 52px;
+      --entre-secciones: var(--e-10);
+      --rapido: 150ms;
     }
 
-    html, body { height: 100%; }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
-      font-family: "DM Sans", sans-serif;
-      background: var(--forest);
-      color: var(--cream);
-      min-height: 100vh;
-      overflow-x: hidden;
+      margin: 0;
+      background: var(--c-fondo);
+      color: var(--c-texto);
+      font-family: var(--f-serifa);
+      font-size: var(--t-cuerpo);
+      line-height: 1.6;
     }
+    img, svg { display: block; }
+    p { text-wrap: pretty; }
 
-    body::before {
-      content: "";
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 15% 0%, rgba(45,90,53,0.4) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 80% at 85% 100%, rgba(26,51,32,0.55) 0%, transparent 70%);
-    }
+    a { color: var(--c-verde); text-underline-offset: 3px; text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+    a:hover { color: var(--c-verde-hondo); text-decoration-thickness: 2px; }
+    :focus-visible { outline: 3px solid var(--c-texto); outline-offset: 3px; }
 
-    .page {
-      position: relative; z-index: 1;
-      max-width: 780px; margin: 0 auto; padding: 0 24px 72px;
-    }
+    .contenedor { max-width: var(--contenedor); margin: 0 auto; padding: 0 var(--margen-lateral); }
+    .filete { height: 9px; border-top: 2px solid var(--c-verde); border-bottom: 2px solid var(--c-verde); }
 
-    /* ── NAV ── */
-    nav {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
-      margin-bottom: 56px;
+    /* Cabecera: la misma que la página de descarga */
+    .cabecera .contenedor { height: var(--cabecera); display: flex; align-items: center; gap: var(--e-4); }
+    .cabecera .logo { height: var(--logo-alto); width: auto; }
+    .cabecera .producto {
+      font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-control); line-height: 1;
+      padding-left: var(--e-4); border-left: 1px solid var(--c-linea);
     }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-icon {
-      width: 34px; height: 34px; border-radius: 9px;
-      background: linear-gradient(135deg, var(--fern), var(--sage));
-      display: flex; align-items: center; justify-content: center;
-    }
-    .nav-logo-icon svg { color: var(--cream); }
-    .nav-logo-text {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 17px; font-weight: 600; color: var(--cream); letter-spacing: 0.3px;
-    }
-    .nav-back {
-      font-size: 12px; color: rgba(143,188,143,0.8);
-      text-decoration: none;
-      background: rgba(106,176,76,0.08); border: 1px solid rgba(106,176,76,0.18);
-      border-radius: 99px; padding: 5px 14px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .nav-back:hover { background: rgba(106,176,76,0.15); color: var(--mint); }
+    .cabecera .ayuda { margin-left: auto; font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); }
 
-    /* ── DOC ── */
-    .doc-header { margin-bottom: 36px; }
-    .doc-title {
-      font-family: "Cormorant Garamond", serif;
-      font-size: clamp(28px, 5vw, 40px); font-weight: 600; line-height: 1.15;
-      color: var(--cream); margin-bottom: 10px;
-    }
-    .doc-meta {
-      font-size: 12px; color: rgba(255,255,255,0.4);
-      letter-spacing: 0.5px;
-    }
+    /* El documento, a la medida de lectura. Cada apartado se abre con una línea fina,
+       como las cláusulas de un documento (igual que «Sobre la clave») */
+    .documento { max-width: var(--lectura); padding-top: var(--e-8); }
+    .volver { display: inline-block; margin-bottom: var(--e-6); font-family: var(--f-condensada); font-weight: 500; font-size: var(--t-pequeno); }
+    h1 { font-weight: 600; font-size: var(--t-h1); line-height: 1.12; letter-spacing: -0.01em; margin: 0 0 var(--e-3); text-wrap: balance; }
+    .fecha { margin: 0 0 var(--e-7); font-size: var(--t-pequeno); color: var(--c-gris); }
+    h2 { font-weight: 600; font-size: var(--t-h3); line-height: 1.3; margin: var(--e-7) 0 var(--e-3); padding-top: var(--e-5); border-top: 1px solid var(--c-linea-suave); }
+    /* Subapartado en condensada, como los h3 de index: no se confunde con las negritas del texto */
+    h3 { font-family: var(--f-condensada); font-weight: 600; font-size: var(--t-cuerpo); line-height: 1.4; margin: var(--e-5) 0 var(--e-2); }
+    .documento p { margin: 0 0 var(--e-3); }
+    .documento ul { margin: 0 0 var(--e-3); padding-left: var(--e-5); }
+    .documento li + li { margin-top: var(--e-2); }
+    code { font-family: var(--f-codigo); font-size: 0.88em; background: var(--c-tinte); padding: 1px var(--e-1); border-radius: var(--radio); overflow-wrap: anywhere; }
 
-    .doc h2 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 22px; font-weight: 600;
-      color: var(--cream);
-      margin-top: 36px; margin-bottom: 14px;
-    }
+    /* Pie: el mismo que la página de descarga */
+    .pie { margin-top: var(--entre-secciones); font-size: var(--t-pequeno); line-height: 1.5; color: var(--c-gris); }
+    .pie .contenedor { padding-top: var(--e-6); padding-bottom: var(--e-9); }
+    .pie ul { list-style: none; margin: 0 0 var(--e-3); padding: 0; display: flex; flex-wrap: wrap; gap: var(--e-2) var(--e-5); }
+    .pie p { margin: 0; }
+    /* ⟦PENDIENTE⟧ dato que falta de SDL, a la vista; desaparece antes del paso 13 */
+    .hueco { background: var(--c-tinte); padding: 0 var(--e-1); border-radius: var(--radio); font-family: var(--f-condensada); font-weight: 500; }
 
-    .doc h3 {
-      font-size: 13px; font-weight: 600;
-      color: var(--mint);
-      margin-top: 18px; margin-bottom: 6px;
-      letter-spacing: 0.3px;
+    @media (max-width: 640px) {
+      :root {
+        --t-h1: 34px; --t-h2: 27px; --t-entradilla: 18px;
+        --margen-lateral: 20px; --cabecera: 56px; --logo-alto: 32px;
+        --entre-secciones: var(--e-9);
+      }
+      .cabecera .producto { font-size: var(--t-cuerpo); padding-left: var(--e-3); }
+      .cabecera .contenedor { gap: var(--e-3); }
+      .cabecera .ayuda { display: none; }
+      .documento { padding-top: var(--e-7); }
     }
-
-    .doc p {
-      font-size: 14px; color: rgba(242,237,228,0.72);
-      line-height: 1.75; margin-bottom: 12px;
-    }
-
-    .doc ul {
-      margin: 6px 0 14px 22px;
-      color: rgba(242,237,228,0.72);
-    }
-    .doc li {
-      font-size: 14px; line-height: 1.7;
-      margin-bottom: 6px;
-    }
-
-    .doc a {
-      color: var(--mint); text-decoration: underline;
-      text-decoration-color: rgba(143,188,143,0.4);
-      transition: text-decoration-color 0.2s;
-    }
-    .doc a:hover { text-decoration-color: var(--mint); }
-
-    .doc strong {
-      color: var(--cream); font-weight: 600;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding-top: 26px; margin-top: 64px;
-      display: flex; flex-direction: column; gap: 10px;
-      font-size: 12px; color: rgba(255,255,255,0.28);
-    }
-    .ft-top {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
-    }
-    .ft-creator { font-size: 12px; color: rgba(255,255,255,0.35); }
-    .ft-links { display: flex; flex-wrap: wrap; gap: 4px 0; }
-    .ft-links a {
-      color: rgba(255,255,255,0.38); text-decoration: none;
-      margin-left: 18px; transition: color 0.2s;
-    }
-    .ft-links a:hover { color: var(--mint); }
-    .ft-links .current {
-      color: var(--mint); cursor: default;
-    }
-    .ft-links .current:hover { color: var(--mint); }
-    .ft-bottom { font-size: 11px; color: rgba(255,255,255,0.2); }
   </style>
 </head>
 <body>
 
-<div class="page">
+<header class="cabecera">
+  <div class="contenedor">
+    <img class="logo" src="../img/logo-sdl.svg" width="95" height="40" alt="SDL · Investigación y divulgación del medio ambiente">
+    <span class="producto">Arbolado Urbano</span>
+    <!-- ⟦SDL: contacto⟧ — de momento apunta al pie, donde irá el contacto -->
+    <a class="ayuda" href="#contacto">¿Problemas? Contacta con SDL</a>
+  </div>
+  <div class="filete"></div>
+</header>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="../">
-      <div class="nav-logo-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
-          <path d="M12 12C12 7 7 4 7 4s1 5 5 8"/><path d="M12 12C12 7 17 4 17 4s-1 5-5 8"/>
-        </svg>
-      </div>
-      <span class="nav-logo-text">Arbolado Urbano</span>
-    </a>
-    <a class="nav-back" href="../">← Volver a inicio</a>
-  </nav>
-
-  <!-- DOCUMENTO -->
-  <article class="doc">
-    <header class="doc-header">
-      <h1 class="doc-title">Política de privacidad</h1>
-      <div class="doc-meta">Última actualización: 27 de septiembre de 2026</div>
-    </header>
+<main class="contenedor">
+  <article class="documento">
+    <a class="volver" href="../">← Volver a la descarga</a>
+    <h1>Política de privacidad</h1>
+    <p class="fecha">Última actualización: 3 de octubre de 2026</p>
 
     <h2>1. Responsable del tratamiento</h2>
-    <p>Daniel Ruiz Figueroa · <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a></p>
+    <p>Daniel Ruiz Figueroa, <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a></p>
 
     <h2>2. Qué datos recogemos y por qué</h2>
-    <p>Esta web y la aplicación de escritorio "Arbolado Urbano" recogen telemetría técnica anónima para detectar errores y entender qué funcionalidades se usan. No recogemos información personal identificable.</p>
+    <p>Esta web y la aplicación de escritorio «Arbolado Urbano» recogen telemetría técnica anónima para detectar errores y entender qué funcionalidades se usan. No recogemos información personal identificable.</p>
 
-    <h3>Sentry — informes de errores</h3>
+    <h3>Sentry: informes de errores</h3>
     <p>Cuando la aplicación falla, se envía un informe técnico (mensaje de error, traza de pila, versión de la app, sistema operativo) a Sentry. No incluye nombre, email, ni el contenido de tu trabajo (especies seleccionadas, municipios, criterios técnicos).</p>
+    <p>Además, cada vez que abres la aplicación se envía a Sentry un aviso anónimo de sesión (que se ha abierto, si se cerró bien, la versión de la app y el sistema operativo), sin ningún dato de tu trabajo.</p>
     <ul>
       <li>Proveedor: Functional Software, Inc. (Sentry).</li>
-      <li>Servidores: Unión Europea (<code>ingest.de.sentry.io</code>).</li>
+      <li>Servidores: Unión Europea (<code translate="no">ingest.de.sentry.io</code>).</li>
     </ul>
 
-    <h3>Umami — analítica de uso</h3>
-    <p>Registramos qué páginas o funciones se visitan, sin cookies, sin huella de navegador y sin IP almacenada. Umami es analítica respetuosa con la privacidad por diseño: no construye un perfil del usuario.</p>
+    <h3>Umami: analítica de uso</h3>
+    <p>Registramos qué funciones se usan en la aplicación, de una lista cerrada (por ejemplo, que se ha hecho una búsqueda, se ha abierto una función o se ha exportado un informe), y qué páginas se visitan en esta web. Nunca se incluyen especies, municipios ni ningún otro dato de tu trabajo. Sin cookies, sin huella de navegador y sin IP almacenada. Umami es analítica respetuosa con la privacidad por diseño: no construye un perfil del usuario.</p>
     <ul>
       <li>Proveedor: Umami Software, Inc.</li>
-      <li>Servidores: <code>cloud.umami.is</code> (UE).</li>
+      <li>Servidores: <code translate="no">gateway.umami.is</code> (envío) y <code translate="no">cloud.umami.is</code> (el script de esta web; la aplicación no lo usa) (UE).</li>
     </ul>
+
+    <h3>GitHub: versión de la descarga (solo esta web)</h3>
+    <p>Al abrir la página de descarga, tu navegador pregunta a GitHub (<code translate="no">api.github.com</code>) cuál es la versión más reciente, para que el botón descargue el instalador correcto. GitHub recibe esa petición y tu IP, como en cualquier visita a su web; no se le envía nada más. El instalador también se descarga desde GitHub.</p>
 
     <h2>3. Servicios externos que consulta la aplicación</h2>
     <p>Aparte de la telemetría, la aplicación se conecta a estos servicios para poder funcionar. No les envía datos personales, pero conviene saber qué recibe cada uno.</p>
     <ul>
-      <li><strong>Servidor de licencias</strong> (<code>arbolado-license.arbolado-auth.workers.dev</code>, Cloudflare): recibe tu clave de licencia y un identificador técnico derivado de tu equipo, que sirve para que una misma clave no se use en varios ordenadores. Hace falta internet al activar; después la aplicación funciona sin conexión y solo necesita contactar con este servidor al menos una vez cada dos semanas, para comprobar que la clave sigue siendo válida.</li>
-      <li><strong>AEMET</strong> (<code>opendata.aemet.es</code>): recibe el municipio o las coordenadas cuyo clima consultas. Es opcional — el mismo paso permite introducir los datos climáticos a mano.</li>
-      <li><strong>OpenStreetMap</strong> (<code>tile.openstreetmap.org</code>): dibuja el fondo del mapa de estaciones meteorológicas. Recibe la zona del mapa que estás viendo, es decir, aproximadamente el municipio consultado. Sin conexión el mapa se ve sin fondo y todo lo demás sigue funcionando. Cartografía © colaboradores de OpenStreetMap.</li>
-      <li><strong>Buscador de OpenStreetMap</strong> (<code>nominatim.openstreetmap.org</code>): al buscar un municipio por su nombre, recibe el texto que escribes. Sin conexión, el municipio se puede escribir a mano.</li>
-      <li><strong>GitHub</strong> (<code>github.com</code> y sus servidores de descarga): al arrancar, comprueba si hay una versión nueva y, si la hay, la descarga. No recibe ningún dato de tu trabajo. Cada actualización va firmada y la aplicación rechaza cualquiera que no lleve esa firma.</li>
-      <li><strong>Unsplash</strong> (<code>images.unsplash.com</code>): solo al exportar la ficha de una especie, para incluir su fotografía en el PDF. Sin conexión la ficha se genera igual, sin la foto.</li>
+      <li><strong>Servidor de licencias</strong> (<code translate="no">arbolado-license.arbolado-auth.workers.dev</code>, Cloudflare): recibe tu clave de licencia y un identificador técnico derivado de tu equipo, que sirve para que una misma clave no se use en varios ordenadores. Hace falta internet al activar; después la aplicación funciona sin conexión y contacta con este servidor al abrirse, como mucho una vez por semana, para comprobar que la clave sigue siendo válida.</li>
+      <li><strong>AEMET</strong> (<code translate="no">opendata.aemet.es</code>): recibe tu clave personal de AEMET, ligada al correo con el que la pediste, y los identificadores de las estaciones meteorológicas más cercanas al municipio que consultas, lo que indica aproximadamente la zona. El municipio no se le envía. Es opcional: el mismo paso permite introducir los datos climáticos a mano.</li>
+      <li><strong>OpenStreetMap</strong> (<code translate="no">tile.openstreetmap.org</code>): dibuja el fondo del mapa de estaciones meteorológicas. Recibe la zona del mapa que estás viendo, es decir, aproximadamente el municipio consultado. Sin conexión el mapa se ve sin fondo y todo lo demás sigue funcionando. Cartografía © colaboradores de OpenStreetMap.</li>
+      <li><strong>Buscador de OpenStreetMap</strong> (<code translate="no">nominatim.openstreetmap.org</code>): al buscar un municipio por su nombre, recibe el texto que escribes. Sin conexión, el municipio se puede escribir a mano.</li>
+      <li><strong>GitHub</strong> (<code translate="no">github.com</code> y sus servidores de descarga): al arrancar, comprueba si hay una versión nueva y, si la hay, la descarga. No recibe ningún dato de tu trabajo. Cada actualización va firmada y la aplicación rechaza cualquiera que no lleve esa firma.</li>
+      <li><strong>Unsplash</strong> (<code translate="no">images.unsplash.com</code>): solo al exportar la ficha de una especie, para incluir su fotografía en el PDF. Sin conexión la ficha se genera igual, sin la foto.</li>
     </ul>
 
-    <h2>4. Qué NO recogemos</h2>
+    <h2>4. Qué no recogemos</h2>
     <ul>
       <li>Tu nombre, email u otros datos personales.</li>
-      <li>El contenido de tus consultas técnicas (especies, municipios, criterios) — todo se procesa localmente en tu equipo.</li>
-      <li>Tu IP — Umami no la almacena; Sentry la recibe solo si la app genera un crash y queda anonimizada en su backend.</li>
+      <li>El contenido de tus consultas técnicas (especies, municipios, criterios): todo se procesa localmente en tu equipo.</li>
+      <li>Tu IP: Umami no la almacena; Sentry la recibe con cada informe o aviso de sesión y queda anonimizada en sus servidores.</li>
       <li>Cookies de publicidad o seguimiento entre sitios.</li>
     </ul>
 
@@ -214,38 +204,40 @@
 
     <h2>6. Conservación</h2>
     <ul>
-      <li><strong>Sentry:</strong> 90 días (retención por defecto del plan gratuito).</li>
+      <li><strong>Sentry:</strong> 30 días (retención del plan gratuito).</li>
       <li><strong>Umami:</strong> agregados estadísticos sin identificadores personales, conservados de forma indefinida como histórico anónimo.</li>
+      <li><strong>Servidor de licencias:</strong> la clave, el nombre con el que SDL la registra (normalmente, el del cliente), la huella técnica del equipo donde se activó y la fecha de la última comprobación, mientras la clave exista. Si otro equipo intenta usar la clave, su huella se guarda 90 días para detectar usos indebidos.</li>
     </ul>
 
     <h2>7. Cómo oponerse</h2>
-    <p>Al ser telemetría anónima sin perfilado, no hay forma de "darse de baja" individualmente porque no sabemos quién eres. Si quieres impedir el envío:</p>
+    <p>Al ser telemetría anónima sin perfilado, no hay forma de «darse de baja» individualmente porque no sabemos quién eres. Si quieres impedir el envío:</p>
     <ul>
-      <li>Bloquea <code>*.ingest.de.sentry.io</code> y <code>cloud.umami.is</code> en tu firewall corporativo o en la configuración de red de tu equipo. La aplicación seguirá funcionando con normalidad sin telemetría.</li>
-      <li>En el futuro está previsto un toggle in-app <em>"No enviar telemetría"</em> — pendiente de implementación post-v1.0.</li>
+      <li>Bloquea <code translate="no">*.ingest.de.sentry.io</code> y <code translate="no">gateway.umami.is</code> en tu firewall corporativo o en la configuración de red de tu equipo. La aplicación seguirá funcionando con normalidad sin telemetría.</li>
+      <li>Más adelante la aplicación tendrá una opción para no enviar estos datos.</li>
     </ul>
-    <p>Los servicios de la sección 3 admiten el mismo bloqueo, con una salvedad importante: <strong>el servidor de licencias tiene que ser accesible</strong> al activar y, después, al menos una vez cada dos semanas; si pasan más de 14 días sin poder contactarlo, la aplicación vuelve a pedir la clave. AEMET, OpenStreetMap (mapa y buscador), Unsplash y GitHub se pueden bloquear sin impedir el uso de la aplicación — se pierde el clima automático, el fondo del mapa, la búsqueda del municipio por su nombre, la foto de la ficha y las actualizaciones automáticas, respectivamente.</p>
+    <p>Los servicios de la sección 3 admiten el mismo bloqueo, con una salvedad importante: <strong>el servidor de licencias tiene que ser accesible</strong> al activar y, después, al abrir la aplicación al menos una vez por semana; si pasan más de 14 días sin poder contactarlo, la aplicación vuelve a pedir la clave. AEMET, OpenStreetMap (mapa y buscador), Unsplash y GitHub se pueden bloquear sin impedir el uso de la aplicación: se pierde el clima automático, el fondo del mapa, la búsqueda del municipio por su nombre, la foto de la ficha y las actualizaciones automáticas, respectivamente.</p>
 
     <h2>8. Tus derechos</h2>
     <p>Acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a <a href="mailto:daniel.ruiz.figueroa01@gmail.com">daniel.ruiz.figueroa01@gmail.com</a>. Como la telemetría es anónima y no permite identificarte individualmente, en la práctica el ejercicio relevante es el bloqueo descrito en la sección 7.</p>
 
     <h2>9. Autoridad de control</h2>
-    <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la Agencia Española de Protección de Datos: <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.</p>
+    <p>Si consideras que el tratamiento de tus datos no es correcto, puedes presentar una reclamación ante la Agencia Española de Protección de Datos: <a href="https://www.aepd.es">www.aepd.es</a>.</p>
   </article>
+</main>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="ft-top">
-      <span class="ft-creator">Desarrollado por Daniel Ruiz Figueroa</span>
-      <div class="ft-links">
-        <a href="" class="current">Política de privacidad</a>
-        <a href="../">Inicio</a>
-      </div>
-    </div>
-    <div class="ft-bottom">© 2026 Arbolado Urbano · Todos los derechos reservados · daniel.ruiz.figueroa01@gmail.com</div>
-  </footer>
-
-</div>
+<footer class="pie" id="contacto">
+  <div class="filete"></div>
+  <div class="contenedor">
+    <!-- ⟦SDL: nombre completo y correo de contacto⟧ y ⟦SDL: Términos⟧: igual que en la página de descarga -->
+    <ul>
+      <li>SDL</li>
+      <li><span class="hueco">Contacto de SDL: pendiente</span></li>
+      <li><a href="./" aria-current="page">Privacidad</a></li>
+      <li>© 2026</li>
+    </ul>
+    <p>Desarrollado por Daniel Ruiz Figueroa en colaboración con SDL.</p>
+  </div>
+</footer>
 
 </body>
 </html>
